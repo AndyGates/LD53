@@ -8,10 +8,10 @@ public class Depot : MonoBehaviour
     Map _map;
 
     [SerializeField]
-    List<Location> _locations = new List<Location>();
+    Courier _courierPrefab;
 
     [SerializeField]
-    Courier _courierPrefab;
+    PackageStream _packageStream;
 
     List<Courier> _couriers = new List<Courier>();
 
@@ -22,13 +22,23 @@ public class Depot : MonoBehaviour
 
     void Awake()
     {
-        foreach(Location location in _locations)
+        foreach(Location location in _map.Locations)
         {
             location.OnSelected += LocationSelected;
         }
 
         _selectedCourier = GameObject.Instantiate<Courier>(_courierPrefab);
         _couriers.Add(_selectedCourier);
+    }
+
+    void Update()
+    {
+        Package package = _packageStream.Next();
+        if(package != null)
+        {
+            Debug.Log("Got new package");
+            _packages.Enqueue(package);
+        }
     }
 
     void LocationSelected(string name)
@@ -73,10 +83,5 @@ public class Depot : MonoBehaviour
         {
             Debug.LogWarning("No courier to dispatch");
         }
-    }
-
-    public void AddPackage(Package package)
-    {
-        _packages.Enqueue(package);
     }
 }

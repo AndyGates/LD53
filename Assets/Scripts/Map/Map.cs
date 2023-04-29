@@ -13,11 +13,16 @@ public enum Cell
 public class Map : MonoBehaviour
 {
     [SerializeField]
+    List<Location> _locations = new List<Location>();
+
+    [SerializeField]
     TextAsset _dataTable;
 
     Cell[][] Grid;
 
     Color[] CellColors = new Color[]{ Color.cyan, Color.magenta, Color.green };
+
+    public IEnumerable<Location> Locations{ get => _locations; }
 
     void Start()
     {
@@ -80,5 +85,10 @@ public class Map : MonoBehaviour
     IEnumerable<Vector2Int> GeneratePath(Vector2Int from, Vector2Int to)
     {
         return null;
+    }
+
+    public bool IsDepot(Vector2Int coord)
+    {
+        return false;
     }
 }

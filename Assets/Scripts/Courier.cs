@@ -10,7 +10,12 @@ public class Courier : MonoBehaviour
     Map _map;
     Queue<Package> _packages = new Queue<Package>();
 
-    public bool IsAtDepot { get; private set; }
+    Vector2Int _mapCoord;
+
+    public bool IsAtDepot
+    {
+        get { return _map == null || _map.IsDepot(_mapCoord); }
+    }
 
     public int CalculateAvailableSpace()
     {
