@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Depot : MonoBehaviour
 {
+    public int PendingPackages { get => _packages.Count + (_selectedPackage == null ? 0 : 1); }
+    public int BankBalance { get; private set; } = 0;
+
     [SerializeField]
     Map _map;
 
@@ -38,6 +42,7 @@ public class Depot : MonoBehaviour
         if(package != null)
         {
             Debug.Log($"Got new package. Size: {package.Size}, Postage; {package.Postage}, Value: {package.Value}, Target: {package.Target.name}");
+            BankBalance += package.Postage;
             _packages.Enqueue(package);
 
             if (_selectedPackage == null)
@@ -46,17 +51,26 @@ public class Depot : MonoBehaviour
             }
         }
 
-        // If we dont have a courier keep checking until one has come back
-        if (_selectedCourier == null)
+        foreach(Courier courier in _couriers)
         {
-            foreach(Courier courier in _couriers)
+            if (courier.IsAtDepot && courier.IsDispatched == false)
             {
-                if (courier.IsAtDepot && courier.IsDispatched == false)
+                if (_selectedCourier == null)
                 {
                     _selectedCourier = courier;
                     Debug.Log("Got new courier");
-                    break;
                 }
+                
+                if(courier.Undelivered.Count > 0)
+                {
+                    int undeliveredCost = courier.Undelivered.Sum(p => p.Value);
+                    BankBalance -= undeliveredCost;
+                    if(BankBalance < 0)
+                    {
+                        Debug.Log("Game over. No monies left.");
+                    }
+                }
+                courier.Clear();
             }
         }
     }

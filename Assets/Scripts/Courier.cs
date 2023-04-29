@@ -11,6 +11,9 @@ public class Courier : MonoBehaviour
         public Location DeliveryLocation;
     }
 
+    public List<Package> Undelivered { get => _undelivered; }
+    public List<Package> Delivered { get => _delivered; }
+
     [SerializeField]
     int _space = 10;
 
@@ -21,6 +24,9 @@ public class Courier : MonoBehaviour
     InTransitPackage? _selectedPackage;
     bool _dispatched = false;
     Route _currentRoute;
+
+    List<Package> _undelivered = new List<Package>();
+    List<Package> _delivered = new List<Package>();
 
     public bool IsAtDepot
     {
@@ -49,6 +55,19 @@ public class Courier : MonoBehaviour
         }
         else
         {
+            if (_selectedPackage != null)
+            {
+                if(_selectedPackage.Value.DeliveryLocation.ReceivePackage(_selectedPackage.Value.Package))
+                {
+                    _delivered.Add(_selectedPackage.Value.Package);
+                    Debug.Log("Packaged successfully delivered");
+                }
+                else
+                {
+                    _undelivered.Add(_selectedPackage.Value.Package);
+                    Debug.Log("Package was rejected");
+                }
+            }
             NextPackage();
         }
     }
@@ -94,10 +113,17 @@ public class Courier : MonoBehaviour
 
     public void Dispatch(Map map)
     {
-        Debug.Log($"Dispatching {name}");
         _map = map;
         _dispatched = true;
 
+        Debug.Log($"Courier dispatching with {_packages.Count} packages");
+
         NextPackage();
+    }
+
+    public void Clear()
+    {
+        _delivered.Clear();
+        _undelivered.Clear();
     }
 }
