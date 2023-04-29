@@ -13,6 +13,7 @@ public class Courier : MonoBehaviour
 
     public List<Package> Undelivered { get => _undelivered; }
     public List<Package> Delivered { get => _delivered; }
+    public int LoadedPackages { get => _packages.Count; }
 
     [SerializeField]
     int _space = 10;

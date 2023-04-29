@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 179341730}
   - component: {fileID: 179341729}
   m_Layer: 5
-  m_Name: Payment
+  m_Name: Postage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Payment: $3'
+  m_text: 'Postage: $3'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1234,6 +1234,12 @@ MonoBehaviour:
   _depot: {fileID: 1144039029}
   _pendingPackagesLabel: {fileID: 877168553}
   _bankBalanceLabel: {fileID: 1636795767}
+  _targetLocationLabel: {fileID: 1362154996}
+  _postageLabel: {fileID: 179341729}
+  _valueLabel: {fileID: 87988109}
+  _sizeLabel: {fileID: 1355269693}
+  _space: {fileID: 1012638353}
+  _loadedPackages: {fileID: 739051014}
 --- !u!1 &657354006
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,7 +1563,7 @@ GameObject:
   - component: {fileID: 1012638354}
   - component: {fileID: 1012638353}
   m_Layer: 5
-  m_Name: Slots
+  m_Name: Space
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2017,7 +2023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Slots: 2'
+  m_text: 'Size: 2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2287,7 +2293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Current Package
+  m_text: Package
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

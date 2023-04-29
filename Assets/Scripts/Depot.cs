@@ -9,6 +9,9 @@ public class Depot : MonoBehaviour
     public int PendingPackages { get => _packages.Count + (_selectedPackage == null ? 0 : 1); }
     public int BankBalance { get; private set; } = 0;
 
+    public Package PendingPackage { get => _selectedPackage; }
+    public Courier SelectedCourier { get => _selectedCourier; }
+
     [SerializeField]
     Map _map;
 
