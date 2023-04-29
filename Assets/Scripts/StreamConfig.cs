@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class StreamConfig
-
+[Serializable]
+public class StreamConfig 
 {
     public List<PostageType> PostageTypes = MakeDefaultTypes();
     // Random ranges

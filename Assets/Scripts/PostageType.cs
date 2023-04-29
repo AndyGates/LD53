@@ -1,5 +1,7 @@
+using System;
 using Unity.VisualScripting;
 
+[Serializable]
 public class PostageType
 {
     public string DisplayName { get; set; }
