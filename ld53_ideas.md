@@ -15,3 +15,10 @@
 * Streams of deliveries
     * Rate of packages increases
 * Real-time 
+
+## TODO
+
+* Upgrade shop?
+* Progression
+* Path finding
+* On boarding

@@ -27,6 +27,7 @@ public class Depot : MonoBehaviour
 
     Queue<Package> _packages = new Queue<Package>();
     Package _selectedPackage = null;
+    bool _incorrectTargetLocationWarned = false;
 
     void Awake()
     {
@@ -90,13 +91,21 @@ public class Depot : MonoBehaviour
             }
             else
             {
-                if (_selectedCourier.AddPackage(_selectedPackage, location))
+                if (_incorrectTargetLocationWarned == false && _selectedPackage.Target.name != location.name)
                 {
-                    NextPackage();
+                    Dialog.Show("You have selected to send this package to the incorrect location. This would result in you having to reimbursed the customer for the value of the item. You will not be warned again.");
+                    _incorrectTargetLocationWarned = true;
                 }
                 else
                 {
-                    Debug.Log("Courier does not have enough space");
+                    if (_selectedCourier.AddPackage(_selectedPackage, location))
+                    {
+                        NextPackage();
+                    }
+                    else
+                    {
+                        Debug.Log("Courier does not have enough space");
+                    }
                 }
             }
         }
