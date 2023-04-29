@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
         if (_depot.PendingPackage != null)
         {
             _targetLocationLabel.text = $"Target Location: {_depot.PendingPackage.Target.name}";
-            _postageLabel.text = $"Postage: ${_depot.PendingPackage.Postage}";
+            _postageLabel.text = $"Postage: ${_depot.PendingPackage.Delivery}";
             _valueLabel.text = $"Value: ${_depot.PendingPackage.Value}";
             _sizeLabel.text = $"Size: {_depot.PendingPackage.Size}";
         }

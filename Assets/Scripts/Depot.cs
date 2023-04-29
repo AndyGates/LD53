@@ -46,8 +46,8 @@ public class Depot : MonoBehaviour
         Package package = _packageStream.Next();
         if(package != null)
         {
-            Debug.Log($"Got new package. Size: {package.Size}, Postage; {package.Postage}, Value: {package.Value}, Target: {package.Target.name}");
-            BankBalance += package.Postage;
+            Debug.Log($"Got new package. Size: {package.Size}, Postage; {package.Delivery.Price}, Value: {package.Value}, Target: {package.Target.name}");
+            BankBalance += package.Delivery.Price;
             _packages.Enqueue(package);
 
             if (_selectedPackage == null)
