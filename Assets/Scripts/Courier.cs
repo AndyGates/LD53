@@ -15,6 +15,8 @@ public class Courier : MonoBehaviour
     public List<Package> Delivered { get => _delivered; }
     public int LoadedPackages { get => _packages.Count; }
 
+    Vector3 PosOffset { get => new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f); }
+
     [SerializeField]
     int _space = 10;
 
@@ -31,28 +33,41 @@ public class Courier : MonoBehaviour
 
     public bool IsAtDepot
     {
-        get { return _map == null || MathHelper.Approximately(_map.ToWorld(_map.DepotLocation), transform.position); }
+        get { return _map == null || MathHelper.Approximately(_map.ToWorld(_map.DepotLocation) + PosOffset, transform.position); }
     }
 
-    public bool IsDispatched{ get => _dispatched; }
+    public bool IsDispatched { get => _dispatched; }
 
-    public Vector2Int DepotLocation { get; set; }
+    int _pathIndex = 0;
+
+    float _deliveringWait = 0.0f;
 
     void Update()
     {
-        if (_dispatched == false)
+        if (_dispatched == false || _currentRoute == null)
         {
             return;
         }
 
+        if (_deliveringWait > 0.0f)
+        {
+            _deliveringWait -= Time.deltaTime;
+            return;
+        }
+
         // TODO: Handle multiple path points
-        Vector3 target = _map.ToWorld(_currentRoute.Path.First());
+        _mapCoord = _currentRoute.Path.ElementAt(Mathf.Clamp(_pathIndex, 0, _currentRoute.Path.Count() - 1));
+        Vector3 target = _map.ToWorld(_mapCoord) + PosOffset;
         Vector3 direction = (target - transform.position).normalized;
         float velocity = _currentRoute.Distance / _currentRoute.Time;
 
         if (MathHelper.Approximately(target, transform.position) == false)
         {
             transform.Translate(direction * velocity * Time.deltaTime, Space.World);
+        }
+        else if(_pathIndex < _currentRoute.Path.Count())
+        {
+            _pathIndex++;
         }
         else
         {
@@ -77,8 +92,13 @@ public class Courier : MonoBehaviour
     {
         if (_packages.Count > 0)
         {
+            if (_selectedPackage != null)
+            {
+                _deliveringWait = 1.0f;
+            }
             _selectedPackage = _packages.Dequeue();
             _currentRoute = _map.GenerateRoute(_mapCoord, _selectedPackage.Value.DeliveryLocation.MapCoord);
+            _pathIndex = 0;
 
             Debug.Log($"Courier heading to {_selectedPackage.Value.DeliveryLocation.name}");
         }
@@ -86,6 +106,8 @@ public class Courier : MonoBehaviour
         {
             _selectedPackage = null;
             _currentRoute = _map.GenerateRoute(_mapCoord, _map.DepotLocation);
+            _pathIndex = 0;
+            _deliveringWait = 1.0f;
             Debug.Log("Heading back to depot");
         } 
         else
@@ -116,6 +138,7 @@ public class Courier : MonoBehaviour
     {
         _map = map;
         _dispatched = true;
+        _mapCoord = _map.DepotLocation;
 
         Debug.Log($"Courier dispatching with {_packages.Count} packages");
 
@@ -126,5 +149,20 @@ public class Courier : MonoBehaviour
     {
         _delivered.Clear();
         _undelivered.Clear();
+    }
+
+    void OnDrawGizmos()
+    {
+        if(_currentRoute == null || _map == null)
+        {
+            return;
+        }
+
+        foreach(Vector2Int wayPoint in _currentRoute.Path)
+        {
+            Gizmos.color = Color.blue;
+            Vector3 pos = _map.ToWorld(wayPoint);
+            Gizmos.DrawSphere(pos + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f), 0.5f);
+        }
     }
 }

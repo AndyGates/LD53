@@ -32,6 +32,8 @@ public class Map : MonoBehaviour
 
     public Vector2Int DepotLocation { get => _depotLocation; }
 
+    public float Scale { get => _scale; }
+
     void Start()
     {
         Load();
@@ -91,11 +93,14 @@ public class Map : MonoBehaviour
 
     public Route GenerateRoute(Vector2Int from, Vector2Int to)
     {
-        float distance = Vector2Int.Distance(from, to);
+        /*float distance = Vector2Int.Distance(from, to);
         float time = distance;
         List<Vector2Int> path = new List<Vector2Int>();
         path.Add(to);
-        return new Route(path, time, distance);
+        return new Route(path, time, distance);*/
+
+        Navigation nav = new Navigation(Grid);
+        return nav.CalculateRoute(from, to);
     }
 
     public bool IsDepot(Vector2Int coord)

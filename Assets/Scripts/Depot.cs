@@ -37,7 +37,7 @@ public class Depot : MonoBehaviour
         }
 
         _selectedCourier = GameObject.Instantiate<Courier>(_courierPrefab);
-        _selectedCourier.transform.position = _map.ToWorld(_map.DepotLocation);
+        _selectedCourier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
         _couriers.Add(_selectedCourier);
     }
 
