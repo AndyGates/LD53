@@ -23,7 +23,7 @@ public class PackageStream : MonoBehaviour
         if (Time.time - _lastGenTime > 10.0f)
         {
             _lastGenTime = Time.time;
-            return new Package(2, _map.Locations.First());
+            return new Package(2, 1, 4, _map.Locations.First());
         }
         return null;
     }
