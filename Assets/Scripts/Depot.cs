@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Depot : MonoBehaviour
 {
@@ -68,6 +69,7 @@ public class Depot : MonoBehaviour
                     if(BankBalance < 0)
                     {
                         Debug.Log("Game over. No monies left.");
+                        SceneManager.LoadScene("Done");
                     }
                 }
                 courier.Clear();
