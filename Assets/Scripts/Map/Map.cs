@@ -39,7 +39,7 @@ public class Map : MonoBehaviour
         // Always load as we dont know if the asset changed
         Load();     
 
-        float scale = 1.0f;
+        float scale = 2.5f;
         float padding = 0.01f;
         for(int row = 0; row < Grid.Length; row++) 
         {
@@ -75,8 +75,6 @@ public class Map : MonoBehaviour
                 Grid[row][col] = (Cell)int.Parse(cells[col]);
             }
         }
-
-        Debug.Log($"Map loaded. {Grid.Length}x{Grid.First().Length}");
     }
 
     IEnumerable<Vector2Int> GeneratePath(Vector2Int from, Vector2Int to)
