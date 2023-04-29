@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 [Serializable]
-public class StreamConfig 
+public class StreamConfig
 {
-    public List<PostageType> PostageTypes = MakeDefaultTypes();
+    public List<PostageType> PostageTypes;
     // Random ranges
     public int MaxSize = 3; // Minimum 1
     public int MinValue = 5;
     public int MaxValue = 20;
 
     // Ranges for random next order timing
-    public float RateUpper = 30;
-    public float RateLower = 5;
-
-    public StreamConfig() {
-         PostageTypes = MakeDefaultTypes();
-    }
-
-
+    public int RateUpper = 25;
+    public int RateLower = 12;
 
 
     // Some default postage types 
-    public static List<PostageType> MakeDefaultTypes()
+    public static List<PostageType> GetDefaultTypes()
     {
         // TODO - add type insurance settings for how much the player has to pay back for lost packages
         var types = new List<PostageType>();

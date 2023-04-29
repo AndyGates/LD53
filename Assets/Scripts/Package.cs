@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using UnityEngine;
 
-//public PostageType;
-
 
 [Serializable]
 public class Package {

@@ -1667,6 +1667,7 @@ MonoBehaviour:
   _sizeLabel: {fileID: 1355269693}
   _space: {fileID: 1012638353}
   _loadedPackages: {fileID: 739051014}
+  _gameManager: {fileID: 1704720833}
 --- !u!1 &657354006
 GameObject:
   m_ObjectHideFlags: 0
@@ -2807,6 +2808,7 @@ MonoBehaviour:
   _map: {fileID: 331762540}
   _courierPrefab: {fileID: 5619828175625296456, guid: d0977e9cbf0ff793cacff223eb2cf632, type: 3}
   _packageStream: {fileID: 1970359644}
+  _gameManager: {fileID: 1704720833}
 --- !u!1 &1330618149
 GameObject:
   m_ObjectHideFlags: 0
@@ -3464,7 +3466,7 @@ GameObject:
   - component: {fileID: 1704720832}
   - component: {fileID: 1704720833}
   m_Layer: 0
-  m_Name: GameState
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3494,7 +3496,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1704720831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc0ebae6280319e8193349e598a4728c, type: 3}
+  m_Script: {fileID: 11500000, guid: cc4f5515dab30254aa8a344e500db7ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1704827247
@@ -3935,6 +3937,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _map: {fileID: 331762540}
+  _gameManager: {fileID: 0}
+  _settings:
+    PostageTypes: []
+    MaxSize: 3
+    MinValue: 5
+    MaxValue: 20
+    RateUpper: 25
+    RateLower: 12
+  NextPackageSeconds: 0
 --- !u!1 &1971702460
 GameObject:
   m_ObjectHideFlags: 0

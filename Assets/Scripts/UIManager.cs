@@ -33,6 +33,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _loadedPackages;
 
+    [SerializeField]
+    GameManager _gameManager;
+
     public void OnDispatchClicked()
     {
         _depot.DispatchCourier();
@@ -41,12 +44,12 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         _pendingPackagesLabel.text = $"Pending Packages: {_depot?.PendingPackages}";
-        _bankBalanceLabel.text = $"Bank Balance: ${_depot?.BankBalance}";
+        _bankBalanceLabel.text = $"Bank Balance: ${_gameManager.State.BankBalance}";
 
         if (_depot.PendingPackage != null)
         {
             _targetLocationLabel.text = $"Target Location: {_depot.PendingPackage.Target.name}";
-            _postageLabel.text = $"Postage: ${_depot.PendingPackage.Delivery}";
+            _postageLabel.text = $"Postage: ${_depot.PendingPackage.Delivery.DisplayName}";
             _valueLabel.text = $"Value: ${_depot.PendingPackage.Value}";
             _sizeLabel.text = $"Size: {_depot.PendingPackage.Size}";
         }
