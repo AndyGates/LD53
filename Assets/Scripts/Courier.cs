@@ -1,34 +1,103 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Courier : MonoBehaviour
 {
+    struct InTransitPackage
+    {
+        public Package Package;
+        public Location DeliveryLocation;
+    }
+
     [SerializeField]
     int _space = 10;
 
     Map _map;
-    Queue<Package> _packages = new Queue<Package>();
+    Queue<InTransitPackage> _packages = new Queue<InTransitPackage>();
 
     Vector2Int _mapCoord;
+    InTransitPackage? _selectedPackage;
+    bool _dispatched = false;
+    Route _currentRoute;
 
     public bool IsAtDepot
     {
-        get { return _map == null || _map.IsDepot(_mapCoord); }
+        get { return _map == null || MathHelper.Approximately(_map.ToWorld(_map.DepotLocation), transform.position); }
+    }
+
+    public bool IsDispatched{ get => _dispatched; }
+
+    public Vector2Int DepotLocation { get; set; }
+
+    void Update()
+    {
+        if (_dispatched == false)
+        {
+            return;
+        }
+
+        // TODO: Handle multiple path points
+        Vector3 target = _map.ToWorld(_currentRoute.Path.First());
+        Vector3 direction = (target - transform.position).normalized;
+        float velocity = _currentRoute.Distance / _currentRoute.Time;
+
+        if (MathHelper.Approximately(target, transform.position) == false)
+        {
+            transform.Translate(direction * velocity * Time.deltaTime, Space.World);
+        }
+        else
+        {
+            NextPackage();
+        }
+    }
+
+    void NextPackage()
+    {
+        if (_packages.Count > 0)
+        {
+            _selectedPackage = _packages.Dequeue();
+            _currentRoute = _map.GenerateRoute(_mapCoord, _selectedPackage.Value.DeliveryLocation.MapCoord);
+
+            Debug.Log($"Courier heading to {_selectedPackage.Value.DeliveryLocation.name}");
+        }
+        else if(IsAtDepot == false)
+        {
+            _selectedPackage = null;
+            _currentRoute = _map.GenerateRoute(_mapCoord, _map.DepotLocation);
+            Debug.Log("Heading back to depot");
+        } 
+        else
+        {
+            _dispatched = false;
+            _map = null;
+            Debug.Log("Back at depot");
+        }
     }
 
     public int CalculateAvailableSpace()
     {
-        return 0;
+        return _space - _packages.Sum(p => p.Package.Size);
     }
 
-    public void AddPackage(Package package)
+    public bool AddPackage(Package package, Location deliveryLocation)
     {
-
+        if (CalculateAvailableSpace() >= package.Size)
+        {
+            Debug.Log("Added package to courier");
+            _packages.Enqueue(new InTransitPackage(){ Package = package, DeliveryLocation = deliveryLocation });
+            return true;
+        }
+        return false;
     }
 
     public void Dispatch(Map map)
     {
+        Debug.Log($"Dispatching {name}");
         _map = map;
+        _dispatched = true;
+
+        NextPackage();
     }
 }

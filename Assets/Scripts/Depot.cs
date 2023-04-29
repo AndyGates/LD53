@@ -28,6 +28,7 @@ public class Depot : MonoBehaviour
         }
 
         _selectedCourier = GameObject.Instantiate<Courier>(_courierPrefab);
+        _selectedCourier.transform.position = _map.ToWorld(_map.DepotLocation);
         _couriers.Add(_selectedCourier);
     }
 
@@ -38,12 +39,31 @@ public class Depot : MonoBehaviour
         {
             Debug.Log($"Got new package. Size: {package.Size}, Postage; {package.Postage}, Value: {package.Value}, Target: {package.Target.name}");
             _packages.Enqueue(package);
+
+            if (_selectedPackage == null)
+            {
+                NextPackage();
+            }
+        }
+
+        // If we dont have a courier keep checking until one has come back
+        if (_selectedCourier == null)
+        {
+            foreach(Courier courier in _couriers)
+            {
+                if (courier.IsAtDepot && courier.IsDispatched == false)
+                {
+                    _selectedCourier = courier;
+                    Debug.Log("Got new courier");
+                    break;
+                }
+            }
         }
     }
 
-    void LocationSelected(string name)
+    void LocationSelected(Location location)
     {
-        if (_selectedCourier.IsAtDepot)
+        if (_selectedCourier != null && _selectedCourier.IsAtDepot)
         {
             if (_selectedPackage == null)
             {
@@ -51,8 +71,14 @@ public class Depot : MonoBehaviour
             }
             else
             {
-                _selectedCourier.AddPackage(_selectedPackage);
-                NextPackage();
+                if (_selectedCourier.AddPackage(_selectedPackage, location))
+                {
+                    NextPackage();
+                }
+                else
+                {
+                    Debug.Log("Courier does not have enough space");
+                }
             }
         }
         else
@@ -78,10 +104,11 @@ public class Depot : MonoBehaviour
         if (_selectedCourier != null)
         {
             _selectedCourier.Dispatch(_map);
+            _selectedCourier = null;
         }
         else
         {
-            Debug.LogWarning("No courier to dispatch");
+            Debug.Log("No courier to dispatch");
         }
     }
 }

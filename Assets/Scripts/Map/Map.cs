@@ -16,7 +16,13 @@ public class Map : MonoBehaviour
     List<Location> _locations = new List<Location>();
 
     [SerializeField]
+    Vector2Int _depotLocation;
+
+    [SerializeField]
     TextAsset _dataTable;
+
+    [SerializeField]
+    float _scale = 2.5f;
 
     Cell[][] Grid;
 
@@ -24,14 +30,16 @@ public class Map : MonoBehaviour
 
     public IEnumerable<Location> Locations{ get => _locations; }
 
+    public Vector2Int DepotLocation { get => _depotLocation; }
+
     void Start()
     {
         Load();
     }
 
-    Vector3 GetWorldCoord(int row, int col)
+    public Vector3 ToWorld(Vector2Int coord)
     {
-        return new Vector3(row, -col);
+        return new Vector3(coord.x, -coord.y) * _scale;
     }
 
     void OnDrawGizmos()
@@ -44,7 +52,6 @@ public class Map : MonoBehaviour
         // Always load as we dont know if the asset changed
         Load();     
 
-        float scale = 2.5f;
         float padding = 0.01f;
         for(int row = 0; row < Grid.Length; row++) 
         {
@@ -52,10 +59,10 @@ public class Map : MonoBehaviour
             {
                 Gizmos.color = CellColors[(int)Grid[row][col]];
                 List<Vector3> lines = new List<Vector3>();
-                lines.Add(new Vector3(col + padding, -row - padding, 0.0f) * scale);
-                lines.Add(new Vector3(col + 1.0f - padding, -row - padding, 0.0f) * scale);
-                lines.Add(new Vector3(col + 1.0f - padding, -(row + 1.0f - padding), 0.0f) * scale);
-                lines.Add(new Vector3(col + padding, -(row + 1.0f - padding), 0.0f) * scale);
+                lines.Add(new Vector3(col + padding, -row - padding, 0.0f) * _scale);
+                lines.Add(new Vector3(col + 1.0f - padding, -row - padding, 0.0f) * _scale);
+                lines.Add(new Vector3(col + 1.0f - padding, -(row + 1.0f - padding), 0.0f) * _scale);
+                lines.Add(new Vector3(col + padding, -(row + 1.0f - padding), 0.0f) * _scale);
                 Gizmos.DrawLineStrip(new System.ReadOnlySpan<Vector3>(lines.ToArray()), true);
             }
         }
@@ -82,13 +89,17 @@ public class Map : MonoBehaviour
         }
     }
 
-    IEnumerable<Vector2Int> GeneratePath(Vector2Int from, Vector2Int to)
+    public Route GenerateRoute(Vector2Int from, Vector2Int to)
     {
-        return null;
+        float distance = Vector2Int.Distance(from, to);
+        float time = distance;
+        List<Vector2Int> path = new List<Vector2Int>();
+        path.Add(to);
+        return new Route(path, time, distance);
     }
 
     public bool IsDepot(Vector2Int coord)
     {
-        return false;
+        return coord == DepotLocation;
     }
 }

@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Location : MonoBehaviour
 {
+    [SerializeField]
+    Vector2Int _mapCoord;
+
     SpriteRenderer _sprite;
     Color _defaultColor;
 
-    public System.Action<string> OnSelected;
+    public System.Action<Location> OnSelected;
+
+    public Vector2Int MapCoord { get => _mapCoord; }
 
     void Awake()
     {
@@ -27,6 +32,11 @@ public class Location : MonoBehaviour
 
     void OnMouseUp()
     {
-        OnSelected.Invoke(name);
+        OnSelected.Invoke(this);
+    }
+
+    public bool ReceivePackage(Package package)
+    {
+        return package.Target.name == name;
     }
 }
