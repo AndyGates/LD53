@@ -24,6 +24,9 @@ public class Map : MonoBehaviour
     [SerializeField]
     float _scale = 2.5f;
 
+    [SerializeField]
+    bool _editing = false;
+
     Cell[][] Grid;
 
     Color[] CellColors = new Color[]{ Color.cyan, Color.magenta, Color.green };
@@ -52,7 +55,10 @@ public class Map : MonoBehaviour
         }
 
         // Always load as we dont know if the asset changed
-        Load();     
+        if (_editing || Grid == null)
+        {
+            Load();
+        }
 
         float padding = 0.01f;
         for(int row = 0; row < Grid.Length; row++) 

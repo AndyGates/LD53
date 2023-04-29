@@ -11,6 +11,9 @@ public class Depot : MonoBehaviour
     public Package PendingPackage { get => _selectedPackage; }
     public Courier SelectedCourier { get => _selectedCourier; }
 
+    public System.Action<Package> OnPackagedAdded;
+    public System.Action<Package> OnPackagedLoaded;
+
     [SerializeField]
     Map _map;
 
@@ -56,6 +59,8 @@ public class Depot : MonoBehaviour
             {
                 NextPackage();
             }
+
+            OnPackagedAdded.Invoke(package);
         }
 
         foreach(Courier courier in _couriers)
@@ -98,6 +103,7 @@ public class Depot : MonoBehaviour
                 {
                     if (_selectedCourier.AddPackage(_selectedPackage, location))
                     {
+                        OnPackagedLoaded(_selectedPackage);
                         NextPackage();
                     }
                     else

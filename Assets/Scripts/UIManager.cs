@@ -10,22 +10,7 @@ public class UIManager : MonoBehaviour
     Depot _depot;
 
     [SerializeField]
-    TextMeshProUGUI _pendingPackagesLabel;
-
-    [SerializeField]
     TextMeshProUGUI _bankBalanceLabel;
-
-    [SerializeField]
-    TextMeshProUGUI _targetLocationLabel;
-
-    [SerializeField]
-    TextMeshProUGUI _postageLabel;
-
-    [SerializeField]
-    TextMeshProUGUI _valueLabel;
-
-    [SerializeField]
-    TextMeshProUGUI _sizeLabel;
 
     [SerializeField]
     TextMeshProUGUI _space;
@@ -36,6 +21,25 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameManager _gameManager;
 
+    [SerializeField]
+    UIPackages _packages;
+
+    void Awake()
+    {
+        _depot.OnPackagedAdded += OnPackageAdded;
+        _depot.OnPackagedLoaded += OnPackagedLoaded;
+    }
+
+    void OnPackageAdded(Package package)
+    {
+        _packages.AddPackage(package);
+    }
+
+    void OnPackagedLoaded(Package package)
+    {
+
+    }
+
     public void OnDispatchClicked()
     {
         _depot.DispatchCourier();
@@ -43,23 +47,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        _pendingPackagesLabel.text = $"Pending Packages: {_depot?.PendingPackages}";
         _bankBalanceLabel.text = $"Bank Balance: ${_gameManager.State.BankBalance}";
-
-        if (_depot.PendingPackage != null)
-        {
-            _targetLocationLabel.text = $"Target Location: {_depot.PendingPackage.Target.name}";
-            _postageLabel.text = $"Postage: ${_depot.PendingPackage.Delivery.DisplayName}";
-            _valueLabel.text = $"Value: ${_depot.PendingPackage.Value}";
-            _sizeLabel.text = $"Size: {_depot.PendingPackage.Size}";
-        }
-        else
-        {
-            _targetLocationLabel.text = "";
-            _postageLabel.text = "";
-            _valueLabel.text = "";
-            _sizeLabel.text = "";
-        }
 
         if (_depot.SelectedCourier != null)
         {
