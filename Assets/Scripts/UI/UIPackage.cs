@@ -48,11 +48,37 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     bool _isDragging = false;
     bool _isHovering = false;
+    Courier _courier;
+    IUIPackageOwner _owner;
+
+    public float Width { get => _sprite.preferredWidth; }
+
+    public Package Package { get => _package; }
+
+    public bool CanDrag { get; set; } = true;
+
+    public bool DontResetOnDrop { get; set; }
+
+    public Vector2 Position 
+    { 
+        get => _rectTransform.anchoredPosition; 
+        set { _rectTransform.anchoredPosition = value; } 
+    }
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    public void SetOwner(IUIPackageOwner owner)
+    {
+        if (_owner != null)
+        {
+            _owner.Remove(this);
+        }
+        _owner = owner;
+        _owner.Add(this);
     }
 
     public void SetPackage(Package package)
@@ -66,10 +92,15 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (CanDrag == false) return;
+
         Canvas canvas = GetComponentsInParent<Canvas>().Last();
         CanvasScaler canvasScaler = canvas.GetComponent<CanvasScaler>();
         
-        _rectTransform.anchoredPosition += eventData.delta / canvasScaler.scaleFactor;
+        if (DontResetOnDrop == false)
+        {
+            Position += eventData.delta / canvasScaler.scaleFactor;
+        }
     }
 
     void UpdateButtonSprites() 
@@ -81,7 +112,7 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         _sprite.SetNativeSize();
     }
 
-        void UpdateDetailSprite() 
+    void UpdateDetailSprite() 
     {
         int size = _package.Size-1;
         _detailSprite.sprite = _packageSprites[size].GetRandom();
@@ -90,18 +121,26 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (CanDrag == false) return;
+
         _isDragging = true;
 
-        _initialPos = _rectTransform.anchoredPosition;
+        _initialPos = Position;
         _canvasGroup.blocksRaycasts = false;
         UpdateButtonSprites();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (CanDrag == false) return;
+
         _isDragging = false;
 
-        _rectTransform.anchoredPosition = _initialPos;
+        if (DontResetOnDrop == false)
+        {
+            Position = _initialPos;
+        }
+        DontResetOnDrop = false;
         _canvasGroup.blocksRaycasts = true;
         UpdateButtonSprites();
     }
@@ -132,9 +171,21 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     void Update()
     {
+        _rectTransform.anchoredPosition = Position;
+
         //TODO: Need a way to query how much time a package has remaining, or at least percentage of time elapsed.
         //float timeRemaining _package.GetTimeRemaining();
         float timeRemaining = 0.5f;
         _timeoutBar.Time = timeRemaining;
+    }
+
+    public void Loaded(Courier courier)
+    {
+        _courier = courier;
+    }
+
+    public void Unloaded(Courier courier)
+    {
+        _courier = null;
     }
 }

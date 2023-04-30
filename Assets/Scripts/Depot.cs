@@ -6,13 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class Depot : MonoBehaviour
 {
-    public int PendingPackages { get => _packages.Count + (_selectedPackage == null ? 0 : 1); }
-
-    public Package PendingPackage { get => _selectedPackage; }
-    public Courier SelectedCourier { get => _selectedCourier; }
+    public int PendingPackages { get => _packages.Count; }
 
     public System.Action<Package> OnPackagedAdded;
     public System.Action<Package> OnPackagedLoaded;
+    public System.Action<Courier> OnCourierCreated;
 
     [SerializeField]
     Map _map;
@@ -28,22 +26,21 @@ public class Depot : MonoBehaviour
 
     List<Courier> _couriers = new List<Courier>();
 
-    Courier _selectedCourier = null;
-
     Queue<Package> _packages = new Queue<Package>();
-    Package _selectedPackage = null;
-    bool _incorrectTargetLocationWarned = false;
 
     void Awake()
     {
-        foreach(Location location in _map.Locations)
-        {
-            location.OnSelected += LocationSelected;
-        }
+        CreateCourier();
+    }
 
-        _selectedCourier = GameObject.Instantiate<Courier>(_courierPrefab);
-        _selectedCourier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
-        _couriers.Add(_selectedCourier);
+    Courier CreateCourier()
+    {
+        Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
+        courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
+        courier.Map = _map;
+        _couriers.Add(courier);
+        OnCourierCreated.Invoke(courier);
+        return courier;
     }
 
     void Update()
@@ -55,11 +52,6 @@ public class Depot : MonoBehaviour
             _gameManager.State.BankBalance += package.Delivery.Price;
             _packages.Enqueue(package);
 
-            if (_selectedPackage == null)
-            {
-                NextPackage();
-            }
-
             OnPackagedAdded.Invoke(package);
         }
 
@@ -67,80 +59,8 @@ public class Depot : MonoBehaviour
         {
             if (courier.IsAtDepot && courier.IsDispatched == false)
             {
-                if (_selectedCourier == null)
-                {
-                    _selectedCourier = courier;
-                    Debug.Log("Got new courier");
-                }
-                
-                if(courier.Undelivered.Count > 0 && _gameManager.State != null)
-                {
-                    int undeliveredCost = courier.Undelivered.Sum(p => p.Value);
-                    _gameManager.State.BankBalance -= undeliveredCost;
-                    _gameManager.State.CheckBalance();
-                }
-                courier.Clear();
+                // TODO: Handle missed delivery windows??
             }
-        }
-    }
-
-    void LocationSelected(Location location)
-    {
-        if (_selectedCourier != null && _selectedCourier.IsAtDepot)
-        {
-            if (_selectedPackage == null)
-            {
-                Debug.Log("No packages to deliver");
-            }
-            else
-            {
-                if (_incorrectTargetLocationWarned == false && _selectedPackage.Target.name != location.name)
-                {
-                    Dialog.Show("You have selected to send this package to the incorrect location. This would result in you having to reimbursed the customer for the value of the item. You will not be warned again.");
-                    _incorrectTargetLocationWarned = true;
-                }
-                else
-                {
-                    if (_selectedCourier.AddPackage(_selectedPackage, location))
-                    {
-                        OnPackagedLoaded(_selectedPackage);
-                        NextPackage();
-                    }
-                    else
-                    {
-                        Debug.Log("Courier does not have enough space");
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("All couriers busy");
-        }
-    }
-
-    void NextPackage()
-    {
-        if (_packages.Count > 0)
-        {
-            _selectedPackage = _packages.Dequeue();
-        }
-        else
-        {
-            _selectedPackage = null;
-        }
-    }
-
-    public void DispatchCourier()
-    {
-        if (_selectedCourier != null)
-        {
-            _selectedCourier.Dispatch(_map);
-            _selectedCourier = null;
-        }
-        else
-        {
-            Debug.Log("No courier to dispatch");
         }
     }
 }

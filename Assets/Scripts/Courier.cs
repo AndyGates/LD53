@@ -5,35 +5,27 @@ using UnityEngine;
 
 public class Courier : MonoBehaviour
 {
-    struct InTransitPackage
-    {
-        public Package Package;
-        public Location DeliveryLocation;
-    }
+    public System.Action<Courier> OnBackAtDepot;
 
-    public List<Package> Undelivered { get => _undelivered; }
-    public List<Package> Delivered { get => _delivered; }
     public int LoadedPackages { get => _packages.Count; }
 
-    Vector3 PosOffset { get => new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f); }
+    public Map Map { get; set; }
+
+    Vector3 PosOffset { get => new Vector3(Map.Scale * 0.5f, -Map.Scale * 0.5f, 0.0f); }
 
     [SerializeField]
-    int _space = 10;
+    int _space = 4;
 
-    Map _map;
-    Queue<InTransitPackage> _packages = new Queue<InTransitPackage>();
+    List<Package> _packages = new List<Package>();
 
     Vector2Int _mapCoord;
-    InTransitPackage? _selectedPackage;
+    Package _selectedPackage;
     bool _dispatched = false;
     Route _currentRoute;
 
-    List<Package> _undelivered = new List<Package>();
-    List<Package> _delivered = new List<Package>();
-
     public bool IsAtDepot
     {
-        get { return _map == null || MathHelper.Approximately(_map.ToWorld(_map.DepotLocation) + PosOffset, transform.position); }
+        get { return Map == null || MathHelper.Approximately(Map.ToWorld(Map.DepotLocation) + PosOffset, transform.position); }
     }
 
     public bool IsDispatched { get => _dispatched; }
@@ -55,9 +47,8 @@ public class Courier : MonoBehaviour
             return;
         }
 
-        // TODO: Handle multiple path points
         _mapCoord = _currentRoute.Path.ElementAt(Mathf.Clamp(_pathIndex, 0, _currentRoute.Path.Count() - 1));
-        Vector3 target = _map.ToWorld(_mapCoord) + PosOffset;
+        Vector3 target = Map.ToWorld(_mapCoord) + PosOffset;
         Vector3 direction = (target - transform.position).normalized;
         float velocity = _currentRoute.Distance / _currentRoute.Time;
 
@@ -73,16 +64,8 @@ public class Courier : MonoBehaviour
         {
             if (_selectedPackage != null)
             {
-                if(_selectedPackage.Value.DeliveryLocation.ReceivePackage(_selectedPackage.Value.Package))
-                {
-                    _delivered.Add(_selectedPackage.Value.Package);
-                    Debug.Log("Packaged successfully delivered");
-                }
-                else
-                {
-                    _undelivered.Add(_selectedPackage.Value.Package);
-                    Debug.Log("Package was rejected");
-                }
+                _selectedPackage.Target.ReceivePackage(_selectedPackage);
+                Debug.Log("Packaged successfully delivered");
             }
             NextPackage();
         }
@@ -96,16 +79,16 @@ public class Courier : MonoBehaviour
             {
                 _deliveringWait = 1.0f;
             }
-            _selectedPackage = _packages.Dequeue();
-            _currentRoute = _map.GenerateRoute(_mapCoord, _selectedPackage.Value.DeliveryLocation.MapCoord);
+            _selectedPackage = _packages.First();
+            _currentRoute = Map.GenerateRoute(_mapCoord, _selectedPackage.Target.MapCoord);
             _pathIndex = 0;
 
-            Debug.Log($"Courier heading to {_selectedPackage.Value.DeliveryLocation.name}");
+            Debug.Log($"Courier heading to {_selectedPackage.Target.name}");
         }
         else if(IsAtDepot == false)
         {
             _selectedPackage = null;
-            _currentRoute = _map.GenerateRoute(_mapCoord, _map.DepotLocation);
+            _currentRoute = Map.GenerateRoute(_mapCoord, Map.DepotLocation);
             _pathIndex = 0;
             _deliveringWait = 1.0f;
             Debug.Log("Heading back to depot");
@@ -113,47 +96,45 @@ public class Courier : MonoBehaviour
         else
         {
             _dispatched = false;
-            _map = null;
             Debug.Log("Back at depot");
+            OnBackAtDepot?.Invoke(this);
         }
     }
 
     public int CalculateAvailableSpace()
     {
-        return _space - _packages.Sum(p => p.Package.Size);
+        return _space - _packages.Sum(p => p.Size);
     }
 
-    public bool AddPackage(Package package, Location deliveryLocation)
+    public bool AddPackage(Package package)
     {
-        if (CalculateAvailableSpace() >= package.Size)
+        if (CalculateAvailableSpace() >= package.Size && IsAtDepot)
         {
             Debug.Log("Added package to courier");
-            _packages.Enqueue(new InTransitPackage(){ Package = package, DeliveryLocation = deliveryLocation });
+            _packages.Add(package);
             return true;
         }
         return false;
     }
 
-    public void Dispatch(Map map)
+    public void RemovePackage(Package package)
     {
-        _map = map;
+        _packages.Remove(package);
+    }
+
+    public void Dispatch()
+    {
         _dispatched = true;
-        _mapCoord = _map.DepotLocation;
+        _mapCoord = Map.DepotLocation;
 
         Debug.Log($"Courier dispatching with {_packages.Count} packages");
 
         NextPackage();
     }
 
-    public void Clear()
-    {
-        _delivered.Clear();
-        _undelivered.Clear();
-    }
-
     void OnDrawGizmos()
     {
-        if(_currentRoute == null || _map == null)
+        if(_currentRoute == null || Map == null)
         {
             return;
         }
@@ -161,8 +142,8 @@ public class Courier : MonoBehaviour
         foreach(Vector2Int wayPoint in _currentRoute.Path)
         {
             Gizmos.color = Color.blue;
-            Vector3 pos = _map.ToWorld(wayPoint);
-            Gizmos.DrawSphere(pos + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f), 0.5f);
+            Vector3 pos = Map.ToWorld(wayPoint);
+            Gizmos.DrawSphere(pos + new Vector3(Map.Scale * 0.5f, -Map.Scale * 0.5f, 0.0f), 0.5f);
         }
     }
 }

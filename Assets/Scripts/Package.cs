@@ -12,6 +12,8 @@ public class Package {
     public Location Target;
     public int Size;
 
+    public System.Action<Package> OnDelivered;
+
     public Package(int size, int value, Location target, PostageType delivery)
     {
         Size = size;

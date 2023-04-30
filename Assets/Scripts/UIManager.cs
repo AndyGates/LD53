@@ -13,26 +13,24 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI _bankBalanceLabel;
 
     [SerializeField]
-    TextMeshProUGUI _space;
-
-    [SerializeField]
-    TextMeshProUGUI _loadedPackages;
-
-    [SerializeField]
     GameManager _gameManager;
 
     [SerializeField]
     UIPackages _packages;
 
+    [SerializeField]
+    UICouriers _couriers;
+
     void Awake()
     {
         _depot.OnPackagedAdded += OnPackageAdded;
         _depot.OnPackagedLoaded += OnPackagedLoaded;
+        _depot.OnCourierCreated += OnCourierCreated;
     }
 
     void OnPackageAdded(Package package)
     {
-        _packages.AddPackage(package);
+        _packages.CreatePackage(package);
     }
 
     void OnPackagedLoaded(Package package)
@@ -40,27 +38,16 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void OnDispatchClicked()
+    void OnCourierCreated(Courier courier)
     {
-        _depot.DispatchCourier();
+        _couriers.AddCourier(courier);
     }
 
     void Update()
     {
         if(_bankBalanceLabel != null)
         {
-            _bankBalanceLabel.text = $"Bank Balance: ${_gameManager.State.BankBalance}";
-        }
-
-        if (_depot.SelectedCourier != null)
-        {
-            _space.text = $"{_depot.SelectedCourier.CalculateAvailableSpace()}";
-            _loadedPackages.text = $"{_depot.SelectedCourier.LoadedPackages}";
-        }
-        else
-        {
-            _space.text = "";
-            _loadedPackages.text = "";
+            _bankBalanceLabel.text = $"$: {_gameManager.State.BankBalance}";
         }
     }
 }

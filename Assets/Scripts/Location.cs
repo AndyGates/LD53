@@ -13,35 +13,18 @@ public class Location : MonoBehaviour
     [SerializeField]
     SpriteRenderer _baseSprite;
 
-    Color _defaultColor;
-
     public System.Action<Location> OnSelected;
 
     public Vector2Int MapCoord { get => _mapCoord; }
 
-    void Awake()
-    {
-        _defaultColor = _baseSprite.color;
-    }
-
-    void OnMouseEnter()
-    {
-        _baseSprite.color = Color.magenta;
-    }
-
-    void OnMouseExit()
-    {
-        _baseSprite.color = _defaultColor;
-    }
-
     void OnMouseUp()
     {
-        OnSelected.Invoke(this);
+        OnSelected?.Invoke(this);
     }
 
-    public bool ReceivePackage(Package package)
+    public void ReceivePackage(Package package)
     {
-        return package.Target.name == name;
+        package.OnDelivered?.Invoke(package);
     }
 
     public void SetHighlightActive(bool active)
