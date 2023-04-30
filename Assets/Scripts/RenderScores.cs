@@ -23,12 +23,12 @@ public class RenderScores : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
+        _highScoreLabel.text = $"You reached ${_gameManager.State.HighestBalance}";
+        _elapsedTimeLabel.text = $"You lived for {_gameManager.GetElapsedMinutes()} minutes";
     }
 
     private void Awake()
     {
-        _highScoreLabel.text = $"You reached  {{$}}{_gameManager.State.HighestBalance}";
-        _elapsedTimeLabel.text = $"You lived for {_gameManager.State.ElapsedSeconds/60} minutes";
+
     }
 }

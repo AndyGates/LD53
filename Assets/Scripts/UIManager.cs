@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     UICouriers _couriers;
 
+    [SerializeField]
+    PauseMenu _pauseMenu;
+
     void Awake()
     {
         _depot.OnPackagedAdded += OnPackageAdded;
@@ -45,6 +48,11 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _pauseMenu.gameObject.SetActive(true);
+        }
+
         if(_bankBalanceLabel != null)
         {
             _bankBalanceLabel.text = $"$: {_gameManager.State.BankBalance}";

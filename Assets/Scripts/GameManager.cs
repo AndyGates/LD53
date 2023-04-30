@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameState State { get; private set; }
+    public GameState State { get; set; }
 
     // Update is called once per frame
     void Update()
@@ -33,10 +33,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Done");
     }
 
-    public void UpdateGameState()
+    public double GetElapsedMinutes()
     {
-
+        var mins = State.ElapsedSeconds / 60;
+        return Math.Round(mins, 2); // 2 decimal
     }
-
-
 }

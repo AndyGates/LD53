@@ -30,15 +30,12 @@ public class PackageStream : MonoBehaviour
     {      
         if (Time.time - _lastGenTime > NextPackageSeconds)
         {
-            if (_gameManager?.State != null)
-            {
-                _gameManager.State.ElapsedSeconds += _lastGenTime;
-            }
             // Increasing rate lower would increase difficulty
             float _rateUpper = _settings.RateLower * _settings.RateUpper;
             NextPackageSeconds = UnityEngine.Random.Range(_settings.RateLower, _settings.RateUpper);
 
             _lastGenTime = Time.time;
+            UpdateElapsedTime();
             return RandomPackage();
         }
         return null;
@@ -46,7 +43,10 @@ public class PackageStream : MonoBehaviour
 
     private void UpdateElapsedTime()
     {
-
+        if (_gameManager?.State != null)
+        {
+            _gameManager.State.ElapsedSeconds += _lastGenTime;
+        }
     } 
 
     private Package RandomPackage()
