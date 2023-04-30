@@ -61,7 +61,7 @@ public class UIPackages : MonoBehaviour, IUIPackageOwner, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         UIPackage package = eventData.pointerDrag.GetComponent<UIPackage>();
-        if (package != null && _packages.Contains(package) == false)
+        if (package != null && _packages.Contains(package) == false && package.CanDrag)
         {
             package.DontResetOnDrop = true;
             package.SetOwner(this);
