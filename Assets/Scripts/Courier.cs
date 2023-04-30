@@ -16,6 +16,9 @@ public class Courier : MonoBehaviour
     [SerializeField]
     int _space = 4;
 
+    [SerializeField]
+    AudioClip _packageAdded;
+
     List<Package> _packages = new List<Package>();
 
     Vector2Int _mapCoord;
@@ -111,6 +114,8 @@ public class Courier : MonoBehaviour
         if (CalculateAvailableSpace() >= package.Size && IsAtDepot)
         {
             _packages.Add(package);
+
+            AudioSource.PlayClipAtPoint(_packageAdded, Vector3.zero);
             return true;
         }
         return false;
@@ -119,6 +124,7 @@ public class Courier : MonoBehaviour
     public void RemovePackage(Package package)
     {
         _packages.Remove(package);
+        AudioSource.PlayClipAtPoint(_packageAdded, Vector3.zero);
     }
 
     public void Dispatch()

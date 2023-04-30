@@ -185,8 +185,6 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     void Update()
     {
-        _rectTransform.anchoredPosition = Position;
-
         //TODO: Need a way to query how much time a package has remaining, or at least percentage of time elapsed.
         float timeRemaining = _package.DeliveryBy - Time.time;
         _timeoutBar.Time = Mathf.Clamp01(timeRemaining / _package.DeliveryTime);
