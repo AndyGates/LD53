@@ -33,6 +33,9 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField]
     Image _detailSprite;
 
+    [SerializeField]
+    UITimingBar _timeoutBar;
+
     public UIPackageTooltip TooltipPrefab { get; set; }
 
     UIPackageTooltip _tooltip;
@@ -97,7 +100,7 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void OnEndDrag(PointerEventData eventData)
     {
         _isDragging = false;
-        
+
         _rectTransform.anchoredPosition = _initialPos;
         _canvasGroup.blocksRaycasts = true;
         UpdateButtonSprites();
@@ -109,6 +112,8 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
         _tooltip = GameObject.Instantiate(TooltipPrefab, Input.mousePosition, Quaternion.identity, transform);
         _tooltip.SetPackage(_package);
+
+        _package.Target.SetHighlightActive(true);
         
         UpdateButtonSprites();
     }
@@ -120,6 +125,16 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         Destroy(_tooltip.gameObject);
         _tooltip = null;
 
+        _package.Target.SetHighlightActive(false);
+
         UpdateButtonSprites();
+    }
+
+    void Update()
+    {
+        //TODO: Need a way to query how much time a package has remaining, or at least percentage of time elapsed.
+        //float timeRemaining _package.GetTimeRemaining();
+        float timeRemaining = 0.5f;
+        _timeoutBar.Time = timeRemaining;
     }
 }

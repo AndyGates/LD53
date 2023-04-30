@@ -47,12 +47,15 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        _bankBalanceLabel.text = $"Bank Balance: ${_gameManager.State.BankBalance}";
+        if(_bankBalanceLabel != null)
+        {
+            _bankBalanceLabel.text = $"Bank Balance: ${_gameManager.State.BankBalance}";
+        }
 
         if (_depot.SelectedCourier != null)
         {
-            _space.text = $"Available Space: {_depot.SelectedCourier.CalculateAvailableSpace()}";
-            _loadedPackages.text = $"Loaded Packages: {_depot.SelectedCourier.LoadedPackages}";
+            _space.text = $"{_depot.SelectedCourier.CalculateAvailableSpace()}";
+            _loadedPackages.text = $"{_depot.SelectedCourier.LoadedPackages}";
         }
         else
         {

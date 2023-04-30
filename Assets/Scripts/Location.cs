@@ -7,7 +7,12 @@ public class Location : MonoBehaviour
     [SerializeField]
     Vector2Int _mapCoord;
 
-    SpriteRenderer _sprite;
+    [SerializeField]
+    SpriteRenderer _outlineSprite;
+
+    [SerializeField]
+    SpriteRenderer _baseSprite;
+
     Color _defaultColor;
 
     public System.Action<Location> OnSelected;
@@ -16,18 +21,17 @@ public class Location : MonoBehaviour
 
     void Awake()
     {
-        _sprite = GetComponent<SpriteRenderer>();
-        _defaultColor = _sprite.color;
+        _defaultColor = _baseSprite.color;
     }
 
     void OnMouseEnter()
     {
-        _sprite.color = Color.magenta;
+        _baseSprite.color = Color.magenta;
     }
 
     void OnMouseExit()
     {
-        _sprite.color = _defaultColor;
+        _baseSprite.color = _defaultColor;
     }
 
     void OnMouseUp()
@@ -38,5 +42,10 @@ public class Location : MonoBehaviour
     public bool ReceivePackage(Package package)
     {
         return package.Target.name == name;
+    }
+
+    public void SetHighlightActive(bool active)
+    {
+        _outlineSprite.enabled = active;
     }
 }
