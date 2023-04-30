@@ -6,13 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameState State { get; set; }
+        [SerializeField]
+        public Sprite _courierLeft;
+        [SerializeField]
+        public Sprite _courierRight;
+        [SerializeField]
+        public Sprite _courierStraight;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        public Sprite FromDirection(Vector3 direction)
+        {
+            Sprite newSprite = _courierStraight;
+            if (direction == Vector3.left) {
+                newSprite = _courierLeft;
+            } else if (direction == Vector3.right)
+            {
+                newSprite = _courierRight;
+            }
+            return newSprite;
+        }
+
+    public GameState State { get; set; }
 
     private void Awake()
     {
