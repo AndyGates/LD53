@@ -17,6 +17,8 @@ public class PackageStream : MonoBehaviour
     public int NextPackageSeconds = 0;
     double _lastGenTime = 0;
 
+    private int PreviousSize;
+
     void Awake()
     {
         _lastGenTime = Time.time;
@@ -52,8 +54,15 @@ public class PackageStream : MonoBehaviour
 
         int randomLocationIndex = UnityEngine.Random.Range(0, _map.Locations.Count());
         Location Target = _map.Locations.ElementAt(randomLocationIndex);
+        
+        int randomSize = 0;
+        do
+        {
+            randomSize = UnityEngine.Random.Range(1, _settings.MaxSize + 1);
+        } while (PreviousSize == randomSize);
 
-        int randomSize = UnityEngine.Random.Range(1, _settings.MaxSize + 1);
+        PreviousSize = randomSize;
+
         int randomValue = UnityEngine.Random.Range(_settings.MinValue, _settings.MaxValue); // value of package contents
 
         return new Package(randomSize, randomValue, Target, deliveryType);

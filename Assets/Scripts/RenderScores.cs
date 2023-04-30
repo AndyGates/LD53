@@ -11,20 +11,24 @@ public class RenderScores : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _highScoreLabel;
 
+    [SerializeField]
+    TextMeshProUGUI _elapsedTimeLabel;
+
     // Start is called before the first frame update
     void Start()
     {
-        //_highScoreLabel.text = $"You lived for {_gameManager.State.ElapsedSeconds}";
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(_gameManager.State.ElapsedSeconds);
+     
     }
 
     private void Awake()
     {
+        _highScoreLabel.text = $"You reached  {{$}}{_gameManager.State.HighestBalance}";
+        _elapsedTimeLabel.text = $"You lived for {_gameManager.State.ElapsedSeconds/60} minutes";
     }
 }
