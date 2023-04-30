@@ -15,9 +15,11 @@ public class PackageStream : MonoBehaviour
     StreamConfig _settings = new StreamConfig(); // default generation settings
 
     public int NextPackageSeconds = 0;
-    double _lastGenTime = 0;
+    float _lastGenTime = 0;
 
     private int PreviousSize;
+
+    public float NextPackageProgress { get { return (Time.time - _lastGenTime) / NextPackageSeconds; } }
 
     void Awake()
     {
