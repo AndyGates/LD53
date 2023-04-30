@@ -31,7 +31,7 @@ public class Map : MonoBehaviour
 
     Color[] CellColors = new Color[]{ Color.cyan, Color.magenta, Color.green };
 
-    public IEnumerable<Location> Locations{ get => _locations; }
+    public List<Location> Locations{ get => _locations; }
 
     public Vector2Int DepotLocation { get => _depotLocation; }
 
