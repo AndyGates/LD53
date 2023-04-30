@@ -91,7 +91,7 @@ public class Depot : MonoBehaviour
         Package incomingPackage = _packageStream.Next();
         if(incomingPackage != null)
         {
-            if (_packages.Count < _maxPendingPackages)
+            if (CountDepotPackages() < _maxPendingPackages)
             {
                 Debug.Log($"Got new package. Size: {incomingPackage.Size}, Postage; {incomingPackage.Delivery.Price}, Value: {incomingPackage.Value}, Target: {incomingPackage.Target.name}");
                 _gameManager.State.BankBalance += incomingPackage.Delivery.Price;
@@ -141,5 +141,10 @@ public class Depot : MonoBehaviour
         _packages.Remove(package);
 
         Console.Show($"Package successfully delivered to {package.Target}");
+    }
+
+    int CountDepotPackages()
+    {
+        return _packages.Count - _couriers.Sum(c => c.LoadedPackages);
     }
 }
