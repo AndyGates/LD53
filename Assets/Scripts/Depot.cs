@@ -57,10 +57,13 @@ public class Depot : MonoBehaviour
                 incomingPackage.OnDelivered += OnDelivered;
 
                 OnPackagedAdded.Invoke(incomingPackage);
+
+                Console.Show($"A new package arrived at the depot.");
             }
             else
             {
                 Debug.Log("Cant store any more packages at the depot");
+                Console.Show("Depot has run out of storage. You are unable to earn any money until you clear the backlog.");
             }
         }
 
@@ -74,7 +77,11 @@ public class Depot : MonoBehaviour
 
                 Debug.Log("Package expired");
 
-                // TODO: What should happen now
+                int compensation = package.Delivery.Price * 2;
+
+                Console.Show($"You have missed the deadline for a delivery. You need to pay the customer compensation of ${compensation}.");
+
+                _gameManager.State.BankBalance -= compensation; // Compensation is twice the postage
             }
         }
         toRemove.ForEach(p => _packages.Remove(p));
@@ -83,5 +90,7 @@ public class Depot : MonoBehaviour
     void OnDelivered(Package package)
     {
         _packages.Remove(package);
+
+        Console.Show($"Package successfully delivered to {package.Target}");
     }
 }

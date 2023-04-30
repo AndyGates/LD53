@@ -19,7 +19,7 @@ public class PackageStream : MonoBehaviour
 
     private int PreviousSize;
 
-    public float NextPackageProgress { get { return (Time.time - _lastGenTime) / NextPackageSeconds; } }
+    public float NextPackageProgress { get { return NextPackageSeconds == 0.0f ? 1.0f : (Time.time - _lastGenTime) / NextPackageSeconds; } }
 
     void Awake()
     {
