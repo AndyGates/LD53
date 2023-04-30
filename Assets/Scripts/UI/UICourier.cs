@@ -50,7 +50,7 @@ public class UICourier : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         UIPackage package = eventData.pointerDrag.GetComponent<UIPackage>();
-        if (package != null)
+        if (package != null && package.CanDrag)
         {
             if (_courier.AddPackage(package.Package))
             {

@@ -30,11 +30,16 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     PackageStream _stream;
 
+    [SerializeField]
+    GameObject _hireButton;
+
     void Awake()
     {
         _depot.OnPackagedAdded += OnPackageAdded;
         _depot.OnPackagedLoaded += OnPackagedLoaded;
         _depot.OnCourierCreated += OnCourierCreated;
+
+        _hireButton.SetActive(false);
     }
 
     void OnPackageAdded(Package package)
@@ -65,5 +70,7 @@ public class UIManager : MonoBehaviour
         }
 
         _nextPackageProgress.Time = _stream.NextPackageProgress;
+
+        _hireButton.SetActive(_depot.CanHire);
     }
 }

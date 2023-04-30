@@ -28,25 +28,62 @@ public class Depot : MonoBehaviour
     [SerializeField]
     AudioClip _startSound;
 
+    [SerializeField]
+    int _firstHireThreshold = 10;
+
+    [SerializeField]
+    int _secondHireThreshold = 20;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
 
+    public bool CanHire 
+    { 
+        get 
+        {
+            if(_gameManager.State == null) return false;
+
+            switch(_couriers.Count)
+            {
+                case 0:
+                    return true;
+                case 1:
+                    return _gameManager.State.BankBalance >= _firstHireThreshold;
+                case 2:
+                    return _gameManager.State.BankBalance >= _secondHireThreshold;
+                default:
+                    return false;
+            }
+        }
+    }
+
+    bool _lastCanHire = false;
+
     void Awake()
     {
-        CreateCourier();
+        HireCourier(true);
+
+        _lastCanHire = CanHire;
 
         AudioSource.PlayClipAtPoint(_startSound, Vector3.zero);
     }
 
-    Courier CreateCourier()
+    public void HireCourier()
     {
-        Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
-        courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
-        courier.Map = _map;
-        _couriers.Add(courier);
-        OnCourierCreated.Invoke(courier);
-        return courier;
+        HireCourier(false);
+    }
+
+    void HireCourier(bool force)
+    {
+        if (CanHire || force)
+        {
+            Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
+            courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
+            courier.Map = _map;
+            _couriers.Add(courier);
+            OnCourierCreated.Invoke(courier);
+        }
     }
 
     void Update()
@@ -90,6 +127,13 @@ public class Depot : MonoBehaviour
             }
         }
         toRemove.ForEach(p => _packages.Remove(p));
+
+
+        if (_lastCanHire != CanHire && CanHire)
+        {
+            Dialog.Show("Well done, you can now hire an additional courier. Click the the hire button next to your balance to hire a extra courier.");
+        }
+        _lastCanHire = CanHire;
     }
 
     void OnDelivered(Package package)
