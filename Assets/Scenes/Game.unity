@@ -1259,9 +1259,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.08032596
+    y: 0.013513514
     width: 1
-    height: 0.83818394
+    height: 0.972973
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1709,9 +1709,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.08032596
+    y: 0.013513514
     width: 1
-    height: 0.83818394
+    height: 0.972973
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -2970,6 +2970,7 @@ MonoBehaviour:
   _packageStream: {fileID: 1970359644}
   _gameManager: {fileID: 1704720833}
   _maxPendingPackages: 7
+  _startSound: {fileID: 8300000, guid: fa75e93569dcc3410b216ae64c51d89d, type: 3}
 --- !u!1 &1211761731
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,16 @@ public class Courier : MonoBehaviour
     int _space = 4;
 
     [SerializeField]
-    AudioClip _packageAdded;
+    AudioClip _packageAddedSound;
+
+    [SerializeField]
+    AudioClip _cantAddPackageSound;
+
+    [SerializeField]
+    AudioClip _dispatchSound;
+
+    [SerializeField]
+    AudioClip _deliveredSound;
 
     List<Package> _packages = new List<Package>();
 
@@ -68,6 +77,7 @@ public class Courier : MonoBehaviour
             if (_selectedPackage != null)
             {
                 _selectedPackage.Target.ReceivePackage(_selectedPackage);
+                AudioSource.PlayClipAtPoint(_deliveredSound, Vector3.zero);
                 Debug.Log("Packaged successfully delivered");
             }
             NextPackage();
@@ -115,22 +125,25 @@ public class Courier : MonoBehaviour
         {
             _packages.Add(package);
 
-            AudioSource.PlayClipAtPoint(_packageAdded, Vector3.zero);
+            AudioSource.PlayClipAtPoint(_packageAddedSound, Vector3.zero);
             return true;
         }
+        AudioSource.PlayClipAtPoint(_cantAddPackageSound, Vector3.zero);
         return false;
     }
 
     public void RemovePackage(Package package)
     {
         _packages.Remove(package);
-        AudioSource.PlayClipAtPoint(_packageAdded, Vector3.zero);
+        AudioSource.PlayClipAtPoint(_packageAddedSound, Vector3.zero);
     }
 
     public void Dispatch()
     {
         _dispatched = true;
         _mapCoord = Map.DepotLocation;
+
+        AudioSource.PlayClipAtPoint(_dispatchSound, Vector3.zero);
 
         Debug.Log($"Courier dispatching with {_packages.Count} packages");
 

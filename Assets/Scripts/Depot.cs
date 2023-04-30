@@ -25,6 +25,9 @@ public class Depot : MonoBehaviour
     [SerializeField]
     int _maxPendingPackages = 7;
 
+    [SerializeField]
+    AudioClip _startSound;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
@@ -32,6 +35,8 @@ public class Depot : MonoBehaviour
     void Awake()
     {
         CreateCourier();
+
+        AudioSource.PlayClipAtPoint(_startSound, Vector3.zero);
     }
 
     Courier CreateCourier()

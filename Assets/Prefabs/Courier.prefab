@@ -98,4 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _space: 4
-  _packageAdded: {fileID: 8300000, guid: 42bd44a4e25059e07bba45c312b0ef2f, type: 3}
+  _packageAddedSound: {fileID: 8300000, guid: 42bd44a4e25059e07bba45c312b0ef2f, type: 3}
+  _cantAddPackageSound: {fileID: 8300000, guid: 5720f087f902daa88a696c4d14a94556, type: 3}
+  _dispatchSound: {fileID: 8300000, guid: 864aba0ef3d8c832c9dda0c26f62baee, type: 3}
+  _deliveredSound: {fileID: 8300000, guid: 43028456add520684ace59665e4f2d7a, type: 3}
