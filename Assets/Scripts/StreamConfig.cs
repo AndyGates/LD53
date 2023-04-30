@@ -12,8 +12,9 @@ public class StreamConfig
     public int MaxValue = 20;
 
     // Ranges for random next order timing
-    public int RateUpper = 25;
-    public int RateLower = 12;
+    public int InitialPacketDispatchTime = 15;
+    public float PacketDispatchTimeScaler = 0.1f; // Amount to reduce the packet rate by per second
+    public float MinPacketDispatchTime = 2; // 1 packet every 2 second 
 
     public float ShortestTime = 20.0f;
     public float LongestTime = 60.0f;

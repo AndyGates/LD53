@@ -29,14 +29,18 @@ public class Depot : MonoBehaviour
     AudioClip _startSound;
 
     [SerializeField]
-    int _firstHireThreshold = 10;
+    int _firstHireThreshold = 50;
 
     [SerializeField]
-    int _secondHireThreshold = 20;
+    int _secondHireThreshold = 100;
 
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
+
+    // Need to make sure if balance drops below target and pop up shown we dont remove button
+    // Looks like a bug otherwise
+    bool _canHireFirst = false;
 
     public bool CanHire 
     { 
@@ -49,7 +53,7 @@ public class Depot : MonoBehaviour
                 case 0:
                     return true;
                 case 1:
-                    return _gameManager.State.BankBalance >= _firstHireThreshold;
+                    return _gameManager.State.BankBalance >= _firstHireThreshold || _canHireFirst;
                 case 2:
                     return _gameManager.State.BankBalance >= _secondHireThreshold;
                 default:
@@ -59,6 +63,7 @@ public class Depot : MonoBehaviour
     }
 
     bool _lastCanHire = false;
+    bool _canHireShow = false;
 
     void Awake()
     {
@@ -129,8 +134,10 @@ public class Depot : MonoBehaviour
         toRemove.ForEach(p => _packages.Remove(p));
 
 
-        if (_lastCanHire != CanHire && CanHire)
+        if (_lastCanHire != CanHire && CanHire && _canHireShow == false)
         {
+            _canHireShow = true;
+            _canHireFirst = true;
             Dialog.Show("Well done, you can now hire an additional courier. Click the the hire button next to your balance to hire a extra courier.");
         }
         _lastCanHire = CanHire;

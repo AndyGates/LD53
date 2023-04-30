@@ -14,26 +14,30 @@ public class PackageStream : MonoBehaviour
     [SerializeField]
     StreamConfig _settings = new StreamConfig(); // default generation settings
 
-    public int NextPackageSeconds = 0;
+    float _packetDispatchTime = 0; // How many seconds to wait before sending a package
     float _lastGenTime = 0;
+    bool _firstPackage = true;
 
     private int PreviousSize;
 
-    public float NextPackageProgress { get { return NextPackageSeconds == 0.0f ? 1.0f : (Time.time - _lastGenTime) / NextPackageSeconds; } }
+    public float NextPackageProgress { get { return _packetDispatchTime == 0.0f ? 1.0f : (Time.time - _lastGenTime) / _packetDispatchTime; } }
 
     void Awake()
     {
-        _lastGenTime = Time.time;
+        _packetDispatchTime = _settings.InitialPacketDispatchTime;
+    }
+
+    void Update()
+    {
+        _packetDispatchTime -= _settings.PacketDispatchTimeScaler * Time.deltaTime;
+        _packetDispatchTime = Mathf.Max(_packetDispatchTime, _settings.MinPacketDispatchTime);
     }
 
     public Package Next()
     {      
-        if (Time.time - _lastGenTime > NextPackageSeconds)
+        if (Time.time - _lastGenTime > _packetDispatchTime || _firstPackage)
         {
-            // Increasing rate lower would increase difficulty
-            float _rateUpper = _settings.RateLower * _settings.RateUpper;
-            NextPackageSeconds = UnityEngine.Random.Range(_settings.RateLower, _settings.RateUpper);
-
+            _firstPackage = false;
             _lastGenTime = Time.time;
             UpdateElapsedTime();
             return RandomPackage();

@@ -1305,9 +1305,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.09617919
-    width: 1.2137002
-    height: 0.4743083
+    y: 0.013513514
+    width: 1
+    height: 0.972973
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1756,9 +1756,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.09617919
-    width: 1.2137002
-    height: 0.4743083
+    y: 0.013513514
+    width: 1
+    height: 0.972973
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -3827,8 +3827,8 @@ MonoBehaviour:
   _gameManager: {fileID: 1704720833}
   _maxPendingPackages: 7
   _startSound: {fileID: 8300000, guid: fa75e93569dcc3410b216ae64c51d89d, type: 3}
-  _firstHireThreshold: 10
-  _secondHireThreshold: 20
+  _firstHireThreshold: 35
+  _secondHireThreshold: 60
 --- !u!1 &1211761731
 GameObject:
   m_ObjectHideFlags: 0
@@ -5110,11 +5110,11 @@ MonoBehaviour:
     MaxSize: 4
     MinValue: 5
     MaxValue: 20
-    RateUpper: 25
-    RateLower: 12
+    InitialPacketDispatchTime: 16
+    PacketDispatchTimeScaler: 0.1
+    MinPacketDispatchTime: 3
     ShortestTime: 20
     LongestTime: 60
-  NextPackageSeconds: 0
 --- !u!1 &2111546664
 GameObject:
   m_ObjectHideFlags: 0
