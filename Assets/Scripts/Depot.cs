@@ -28,25 +28,51 @@ public class Depot : MonoBehaviour
     [SerializeField]
     AudioClip _startSound;
 
+    [SerializeField]
+    int _firstHireThreshold = 10;
+
+    [SerializeField]
+    int _secondHireThreshold = 20;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
 
+    public bool CanHire 
+    { 
+        get 
+        {
+            switch(_couriers.Count)
+            {
+                case 0:
+                    return true;
+                case 1:
+                    return _gameManager.State.BankBalance >= _firstHireThreshold;
+                case 2:
+                    return _gameManager.State.BankBalance >= _secondHireThreshold;
+                default:
+                    return false;
+            }
+        }
+    }
+
     void Awake()
     {
-        CreateCourier();
+        HireCourier();
 
         AudioSource.PlayClipAtPoint(_startSound, Vector3.zero);
     }
 
-    Courier CreateCourier()
+    public void HireCourier()
     {
-        Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
-        courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
-        courier.Map = _map;
-        _couriers.Add(courier);
-        OnCourierCreated.Invoke(courier);
-        return courier;
+        if (CanHire)
+        {
+            Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
+            courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
+            courier.Map = _map;
+            _couriers.Add(courier);
+            OnCourierCreated.Invoke(courier);
+        }
     }
 
     void Update()
