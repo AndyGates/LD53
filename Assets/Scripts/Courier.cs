@@ -13,6 +13,21 @@ public class Courier : MonoBehaviour
 
     Vector3 PosOffset { get => new Vector3(Map.Scale * 0.5f, -Map.Scale * 0.5f, 0.0f); }
 
+    private SpriteRenderer SpriteRenderer;
+    private Sprite CurrentSprite;
+
+    //void ChangeSpriteDirection(Vector3 direction)
+    //{
+
+    //    Sprite s = new Sprite()
+    //    if (direction.x > 0)
+    //    {
+
+    //    }
+
+    //    SpriteRenderer.sprite = s;
+    //}
+
     [SerializeField]
     int _space = 4;
 
@@ -63,6 +78,10 @@ public class Courier : MonoBehaviour
         Vector3 target = Map.ToWorld(_mapCoord) + PosOffset;
         Vector3 direction = (target - transform.position).normalized;
         float velocity = _currentRoute.Distance / _currentRoute.Time;
+
+        //if (direction)
+
+        
 
         if (MathHelper.Approximately(target, transform.position) == false)
         {

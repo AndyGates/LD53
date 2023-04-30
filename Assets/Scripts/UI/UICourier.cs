@@ -40,11 +40,11 @@ public class UICourier : MonoBehaviour, IDropHandler
 
     public void Dispatch()
     {
-        _courier.Dispatch();
-
         _delivering.SetActive(true);
         _dispatch.SetActive(false);
         _bag.SetCanDrag(false);
+        
+        _courier.Dispatch();
     }
 
     public void OnDrop(PointerEventData eventData)
