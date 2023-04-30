@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Courier : MonoBehaviour
@@ -13,20 +14,39 @@ public class Courier : MonoBehaviour
 
     Vector3 PosOffset { get => new Vector3(Map.Scale * 0.5f, -Map.Scale * 0.5f, 0.0f); }
 
-    private SpriteRenderer SpriteRenderer;
+    [SerializeField]
+    public Sprite _courierLeft;
+    [SerializeField]
+    public Sprite _courierRight;
+    [SerializeField]
+    public Sprite _courierStraight;
+
+    public float angle;
+    private SpriteRenderer _renderer;
     private Sprite CurrentSprite;
+    private Vector3 NewDirection;
+    private Vector3 LastDirection;
 
-    //void ChangeSpriteDirection(Vector3 direction)
-    //{
+    public void Start()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+    }
 
-    //    Sprite s = new Sprite()
-    //    if (direction.x > 0)
-    //    {
+    IEnumerator ChangeSpriteDirection()
+    {
 
-    //    }
-
-    //    SpriteRenderer.sprite = s;
-    //}
+        CurrentSprite = _courierStraight;
+        if (NewDirection.x > 0)
+        {
+            CurrentSprite = _courierLeft;
+        }
+        else if (NewDirection.x < 0)
+        {
+            CurrentSprite = _courierRight;
+        }
+        _renderer.sprite = CurrentSprite;
+        yield return null;
+    }
 
     [SerializeField]
     int _space = 4;
@@ -76,16 +96,18 @@ public class Courier : MonoBehaviour
 
         _mapCoord = _currentRoute.Path.ElementAt(Mathf.Clamp(_pathIndex, 0, _currentRoute.Path.Count() - 1));
         Vector3 target = Map.ToWorld(_mapCoord) + PosOffset;
-        Vector3 direction = (target - transform.position).normalized;
         float velocity = _currentRoute.Distance / _currentRoute.Time;
+        
+        NewDirection = (target - transform.position).normalized;
+        StartCoroutine(ChangeSpriteDirection());
+        
 
-        //if (direction)
 
         
 
         if (MathHelper.Approximately(target, transform.position) == false)
         {
-            transform.Translate(direction * velocity * Time.deltaTime, Space.World);
+            transform.Translate(NewDirection * velocity * Time.deltaTime, Space.World);
         }
         else if(_pathIndex < _currentRoute.Path.Count())
         {
