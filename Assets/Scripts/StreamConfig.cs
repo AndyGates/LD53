@@ -15,6 +15,9 @@ public class StreamConfig
     public int RateUpper = 25;
     public int RateLower = 12;
 
+    public float ShortestTime = 20.0f;
+    public float LongestTime = 60.0f;
+
 
     // Some default postage types 
     public static List<PostageType> GetDefaultTypes()

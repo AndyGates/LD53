@@ -59,6 +59,8 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public bool DontResetOnDrop { get; set; }
 
+    public bool IsDragging { get => _isDragging; }
+
     public Vector2 Position 
     { 
         get => _rectTransform.anchoredPosition; 
@@ -84,10 +86,22 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void SetPackage(Package package)
     {
         _package = package;
-        Debug.Log($"Adding ui package with size {package.Size}");
+        _package.OnExpired += OnExpired;
 
         UpdateButtonSprites();
         UpdateDetailSprite();
+    }
+
+    void OnExpired(Package package)
+    {
+        if (package == _package)
+        {
+            if (_owner != null)
+            {
+                _owner.Remove(this);
+            }
+            Destroy(gameObject);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -174,9 +188,8 @@ public class UIPackage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         _rectTransform.anchoredPosition = Position;
 
         //TODO: Need a way to query how much time a package has remaining, or at least percentage of time elapsed.
-        //float timeRemaining _package.GetTimeRemaining();
-        float timeRemaining = 0.5f;
-        _timeoutBar.Time = timeRemaining;
+        float timeRemaining = _package.DeliveryBy - Time.time;
+        _timeoutBar.Time = Mathf.Clamp01(timeRemaining / _package.DeliveryTime);
     }
 
     public void Loaded(Courier courier)

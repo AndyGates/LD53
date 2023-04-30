@@ -51,7 +51,10 @@ public class UIPackages : MonoBehaviour, IUIPackageOwner, IDropHandler
     {
         for(int i = 0; i < _packages.Count; i++)
         {
-            _packages[i].Position = new Vector2(0.0f, -_ySpacing * i);
+            if (_packages[i].IsDragging == false)
+            {
+                _packages[i].Position = new Vector2(0.0f, -_ySpacing * i);
+            }
         }
     }
 
@@ -63,5 +66,6 @@ public class UIPackages : MonoBehaviour, IUIPackageOwner, IDropHandler
             package.DontResetOnDrop = true;
             package.SetOwner(this);
         }
+        UpdateSpacing();
     }
 }

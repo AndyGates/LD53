@@ -110,7 +110,6 @@ public class Courier : MonoBehaviour
     {
         if (CalculateAvailableSpace() >= package.Size && IsAtDepot)
         {
-            Debug.Log("Added package to courier");
             _packages.Add(package);
             return true;
         }

@@ -49,6 +49,8 @@ public class PackageStream : MonoBehaviour
 
     private Package RandomPackage()
     {
+        float deliveryTime = UnityEngine.Random.Range(_settings.ShortestTime, _settings.LongestTime);
+
         int randomIndex = UnityEngine.Random.Range(0, _settings.PostageTypes.Count);
         PostageType deliveryType = StreamConfig.GetDefaultTypes()[randomIndex];
 
@@ -65,6 +67,6 @@ public class PackageStream : MonoBehaviour
 
         int randomValue = UnityEngine.Random.Range(_settings.MinValue, _settings.MaxValue); // value of package contents
 
-        return new Package(randomSize, randomValue, Target, deliveryType);
+        return new Package(deliveryTime, randomSize, randomValue, Target, deliveryType);
     }
 }

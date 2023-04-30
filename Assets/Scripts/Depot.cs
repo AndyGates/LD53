@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Depot : MonoBehaviour
 {
-    public int PendingPackages { get => _packages.Count; }
-
     public System.Action<Package> OnPackagedAdded;
     public System.Action<Package> OnPackagedLoaded;
     public System.Action<Courier> OnCourierCreated;
@@ -26,7 +24,7 @@ public class Depot : MonoBehaviour
 
     List<Courier> _couriers = new List<Courier>();
 
-    Queue<Package> _packages = new Queue<Package>();
+    List<Package> _packages = new List<Package>();
 
     void Awake()
     {
@@ -45,22 +43,35 @@ public class Depot : MonoBehaviour
 
     void Update()
     {
-        Package package = _packageStream.Next();
-        if(package != null)
+        Package incomingPackage = _packageStream.Next();
+        if(incomingPackage != null)
         {
-            Debug.Log($"Got new package. Size: {package.Size}, Postage; {package.Delivery.Price}, Value: {package.Value}, Target: {package.Target.name}");
-            _gameManager.State.BankBalance += package.Delivery.Price;
-            _packages.Enqueue(package);
+            Debug.Log($"Got new package. Size: {incomingPackage.Size}, Postage; {incomingPackage.Delivery.Price}, Value: {incomingPackage.Value}, Target: {incomingPackage.Target.name}");
+            _gameManager.State.BankBalance += incomingPackage.Delivery.Price;
+            _packages.Add(incomingPackage);
+            incomingPackage.OnDelivered += OnDelivered;
 
-            OnPackagedAdded.Invoke(package);
+            OnPackagedAdded.Invoke(incomingPackage);
         }
 
-        foreach(Courier courier in _couriers)
+        List<Package> toRemove = new List<Package>();
+        foreach(Package package in _packages)
         {
-            if (courier.IsAtDepot && courier.IsDispatched == false)
+            if (package.HasExpired())
             {
-                // TODO: Handle missed delivery windows??
+                package.OnExpired?.Invoke(package);
+                toRemove.Add(package);
+
+                Debug.Log("Package expired");
+
+                // TODO: What should happen now
             }
         }
+        toRemove.ForEach(p => _packages.Remove(p));
+    }
+
+    void OnDelivered(Package package)
+    {
+        _packages.Remove(package);
     }
 }

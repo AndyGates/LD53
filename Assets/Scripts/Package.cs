@@ -11,14 +11,24 @@ public class Package {
     public int Value;
     public Location Target;
     public int Size;
+    public float DeliveryBy;
+    public float DeliveryTime;
 
     public System.Action<Package> OnDelivered;
+    public System.Action<Package> OnExpired;
 
-    public Package(int size, int value, Location target, PostageType delivery)
+    public Package(float deliverTime, int size, int value, Location target, PostageType delivery)
     {
+        DeliveryTime = deliverTime;
+        DeliveryBy = Time.time + deliverTime;
         Size = size;
         Value = value;
         Target = target;
         Delivery = delivery;
-    } 
+    }
+
+    public bool HasExpired()
+    {
+        return DeliveryBy < Time.time;
+    }
 }

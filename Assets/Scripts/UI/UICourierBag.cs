@@ -18,7 +18,8 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
 
         _packages.Add(package);
 
-        package.Package.OnDelivered += OnDelivered;
+        package.Package.OnDelivered += OnDestroyPackage;
+        package.Package.OnExpired += OnDestroyPackage;
 
         Debug.Log($"Adding package to bag {_packages.Count}");
     }
@@ -26,7 +27,8 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
     public void Remove(UIPackage package)
     {
         _packages.Remove(package);
-        package.Package.OnDelivered -= OnDelivered;
+        package.Package.OnDelivered -= OnDestroyPackage;
+        package.Package.OnExpired -= OnDestroyPackage;
 
         Courier.RemovePackage(package.Package);
         package.Unloaded(Courier);
@@ -34,7 +36,7 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
         Debug.Log($"Removing package from bag {_packages.Count}");
     }
 
-    void OnDelivered(Package package)
+    void OnDestroyPackage(Package package)
     {
         UIPackage uiPackage = _packages.Find(p => p.Package == package);
         if (uiPackage != null)
