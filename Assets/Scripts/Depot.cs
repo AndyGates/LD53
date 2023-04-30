@@ -42,6 +42,8 @@ public class Depot : MonoBehaviour
     { 
         get 
         {
+            if(_gameManager.State == null) return false;
+
             switch(_couriers.Count)
             {
                 case 0:
@@ -56,16 +58,25 @@ public class Depot : MonoBehaviour
         }
     }
 
+    bool _lastCanHire = false;
+
     void Awake()
     {
-        HireCourier();
+        HireCourier(true);
+
+        _lastCanHire = CanHire;
 
         AudioSource.PlayClipAtPoint(_startSound, Vector3.zero);
     }
 
     public void HireCourier()
     {
-        if (CanHire)
+        HireCourier(false);
+    }
+
+    void HireCourier(bool force)
+    {
+        if (CanHire || force)
         {
             Courier courier = GameObject.Instantiate<Courier>(_courierPrefab);
             courier.transform.position = _map.ToWorld(_map.DepotLocation) + new Vector3(_map.Scale * 0.5f, -_map.Scale * 0.5f, 0.0f);
@@ -116,6 +127,13 @@ public class Depot : MonoBehaviour
             }
         }
         toRemove.ForEach(p => _packages.Remove(p));
+
+
+        if (_lastCanHire != CanHire && CanHire)
+        {
+            Dialog.Show("Well done, you can now hire an additional courier. Click the the hire button next to your balance to hire a extra courier.");
+        }
+        _lastCanHire = CanHire;
     }
 
     void OnDelivered(Package package)
