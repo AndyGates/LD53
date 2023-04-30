@@ -22,6 +22,9 @@ public class Depot : MonoBehaviour
     [SerializeField]
     GameManager _gameManager;
 
+    [SerializeField]
+    int _maxPendingPackages = 7;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
@@ -46,12 +49,19 @@ public class Depot : MonoBehaviour
         Package incomingPackage = _packageStream.Next();
         if(incomingPackage != null)
         {
-            Debug.Log($"Got new package. Size: {incomingPackage.Size}, Postage; {incomingPackage.Delivery.Price}, Value: {incomingPackage.Value}, Target: {incomingPackage.Target.name}");
-            _gameManager.State.BankBalance += incomingPackage.Delivery.Price;
-            _packages.Add(incomingPackage);
-            incomingPackage.OnDelivered += OnDelivered;
+            if (_packages.Count < _maxPendingPackages)
+            {
+                Debug.Log($"Got new package. Size: {incomingPackage.Size}, Postage; {incomingPackage.Delivery.Price}, Value: {incomingPackage.Value}, Target: {incomingPackage.Target.name}");
+                _gameManager.State.BankBalance += incomingPackage.Delivery.Price;
+                _packages.Add(incomingPackage);
+                incomingPackage.OnDelivered += OnDelivered;
 
-            OnPackagedAdded.Invoke(incomingPackage);
+                OnPackagedAdded.Invoke(incomingPackage);
+            }
+            else
+            {
+                Debug.Log("Cant store any more packages at the depot");
+            }
         }
 
         List<Package> toRemove = new List<Package>();

@@ -24,6 +24,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     PauseMenu _pauseMenu;
 
+    [SerializeField]
+    UITimingBar _nextPackageProgress;
+
+    [SerializeField]
+    PackageStream _stream;
+
     void Awake()
     {
         _depot.OnPackagedAdded += OnPackageAdded;
@@ -57,5 +63,7 @@ public class UIManager : MonoBehaviour
         {
             _bankBalanceLabel.text = $"$: {_gameManager.State.BankBalance}";
         }
+
+        _nextPackageProgress.Time = _stream.NextPackageProgress;
     }
 }
