@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && _gameManager.IsPaused == false)
         {
             _pauseMenu.gameObject.SetActive(true);
         }

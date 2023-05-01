@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
     public GameState State { get; set; }
 
+    public bool IsPaused { get; private set; }
+
     private void Awake()
     {
         var state = FindAnyObjectByType(typeof(GameState)) as GameState;
@@ -55,10 +57,12 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0.0f;
+        IsPaused = true;
     }
 
     public void Resume()
     {
         Time.timeScale = 1.0f;
+        IsPaused = false;
     }
 }
