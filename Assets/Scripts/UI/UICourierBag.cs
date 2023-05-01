@@ -33,6 +33,13 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
         Courier.RemovePackage(package.Package);
         package.Unloaded(Courier);
 
+        // Only reorder if at depot so can see what expires when out delivering
+        if (Courier.IsDispatched == false)
+        {
+            Debug.Log("Reordering bag");
+            Reorder();
+        }
+
         Debug.Log($"Removing package from bag {_packages.Count}");
     }
 
@@ -43,8 +50,6 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
         {
             Remove(uiPackage);
             Destroy(uiPackage.gameObject);
-
-            // TODO: Move elements up in bag??
         }
     }
 
@@ -53,6 +58,16 @@ public class UICourierBag : MonoBehaviour, IUIPackageOwner
         foreach(UIPackage package in _packages)
         {
             package.CanDrag = canDrag;
+        }
+    }
+
+    void Reorder()
+    {
+        float totalWidth = 0.0f;
+        foreach(UIPackage package in _packages)
+        {
+            package.Position = new Vector2(totalWidth, 0.0f);
+            totalWidth += package.Width;
         }
     }
 }

@@ -2283,8 +2283,8 @@ MonoBehaviour:
   _gameManager: {fileID: 1704720833}
   _maxPendingPackages: 7
   _startSound: {fileID: 8300000, guid: fa75e93569dcc3410b216ae64c51d89d, type: 3}
-  _firstHireThreshold: 10
-  _secondHireThreshold: 40
+  _firstHireThreshold: 15
+  _secondHireThreshold: 45
 --- !u!1 &1211761731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,8 +3476,8 @@ MonoBehaviour:
     InitialPacketDispatchTime: 16
     PacketDispatchTimeScaler: 0.1
     MinPacketDispatchTime: 3
-    ShortestTime: 20
-    LongestTime: 60
+    ShortestTime: 45
+    LongestTime: 120
 --- !u!1 &2143762395
 GameObject:
   m_ObjectHideFlags: 0
