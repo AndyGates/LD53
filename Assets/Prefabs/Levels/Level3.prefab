@@ -5913,10 +5913,10 @@ PrefabInstance:
       addedObject: {fileID: 5394323673481701018}
     - targetCorrespondingSourceObject: {fileID: 674292952548540643, guid: 74450df8c746b444e8cba13f1e26939b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5136063138198770057}
+      addedObject: {fileID: 6382900957128947072}
     - targetCorrespondingSourceObject: {fileID: 674292952548540643, guid: 74450df8c746b444e8cba13f1e26939b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6382900957128947072}
+      addedObject: {fileID: 5136063138198770057}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74450df8c746b444e8cba13f1e26939b, type: 3}
 --- !u!4 &941367256120187507 stripped
@@ -5934,7 +5934,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2679263046569051645, guid: d56d0409ab29a464a9bf1388fabbb08f, type: 3}
       propertyPath: _mapCoord.x
-      value: 0
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2679263046569051645, guid: d56d0409ab29a464a9bf1388fabbb08f, type: 3}
+      propertyPath: _mapCoord.y
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5627087760333002994, guid: d56d0409ab29a464a9bf1388fabbb08f, type: 3}
       propertyPath: m_RootOrder
@@ -6052,11 +6056,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9117078872510380639, guid: 06336d2afbe4bd648b93e1c1a5109e98, type: 3}
       propertyPath: _mapCoord.x
-      value: -5
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 9117078872510380639, guid: 06336d2afbe4bd648b93e1c1a5109e98, type: 3}
       propertyPath: _mapCoord.y
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6126,11 +6130,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.x
-      value: -3
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.y
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6200,11 +6204,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.x
-      value: -5
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.y
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

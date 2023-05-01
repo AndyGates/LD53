@@ -29,12 +29,24 @@ public class Navigation
     public Navigation(Cell[][] grid)
     {
         _grid = grid;
-        _width = grid.Length;
-        _height = grid.First().Length;
+        _width = grid.First().Length;
+        _height = grid.Length;
     }
 
     public Route CalculateRoute(Vector2Int start, Vector2Int goal)
     {
+        if(InBounds(goal) == false)
+        {
+            Debug.LogError($"Failed to generate a route to ({goal.x},{goal.y}) as not in bounds");
+            return null;
+        }
+
+        if(Passable(goal) == false)
+        {
+            Debug.LogError($"Failed to generate a route to ({goal.x},{goal.y}) as not passable");
+            return null;
+        }
+
         // TODO: Reset/clear all things
 
         // The set of discovered nodes that may need to be (re-)expanded.
@@ -74,6 +86,7 @@ public class Navigation
             }
         }
 
+        Debug.LogError($"Failed to generate a route to ({goal.x},{goal.y}).");
         return null;
     }
 
@@ -106,7 +119,15 @@ public class Navigation
 
     bool Passable(Vector2Int id)
     {
-        return _grid[id.y][id.x] == Cell.Road;
+        try
+        {
+            return _grid[id.y][id.x] == Cell.Road;
+        }
+        catch(System.IndexOutOfRangeException)
+        {
+            Debug.LogWarning($"X({id.x}) or Y({id.y}) is out of range of the map {_width}x{_height}");
+            return false;
+        }
     }
 
 }
