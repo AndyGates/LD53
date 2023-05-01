@@ -17,6 +17,9 @@ public class MapSectionManager : MonoBehaviour
     [SerializeField]
     Map _mapService;
 
+    [SerializeField]
+    AudioSource _spawnSound;
+
     public Tilemap Roads {get { return _roads; } }
 
     [SerializeField]
@@ -51,6 +54,8 @@ public class MapSectionManager : MonoBehaviour
         AppendTilemap(_ground, section.GroundTiles);
         AppendLocations(section.Locations);
         _mapService.Refresh();
+
+        _spawnSound.Play();
 
         //If we are not a prefab, disable any renderers. Maybe used for "ghost"
         if(section.gameObject.scene.rootCount != 0)

@@ -39,7 +39,7 @@ Transform:
   - {fileID: 8543045644497142517}
   - {fileID: 7386032247577527981}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &5019472353082493734
 Grid:
@@ -3009,6 +3009,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 551e8e3cd165b334bab229286e32a9fe, type: 3}
+    - target: {fileID: 9117078872510380639, guid: 06336d2afbe4bd648b93e1c1a5109e98, type: 3}
+      propertyPath: _mapCoord.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117078872510380639, guid: 06336d2afbe4bd648b93e1c1a5109e98, type: 3}
+      propertyPath: _mapCoord.y
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3151,7 +3159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7952827862518064441, guid: 7ea6277504f70bc4eb11a11d7023909a, type: 3}
       propertyPath: _mapCoord.x
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7952827862518064441, guid: 7ea6277504f70bc4eb11a11d7023909a, type: 3}
       propertyPath: _mapCoord.y
