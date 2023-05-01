@@ -51,6 +51,15 @@ public class MapSectionManager : MonoBehaviour
         AppendTilemap(_ground, section.GroundTiles);
         AppendLocations(section.Locations);
         _mapService.Refresh();
+
+        //If we are not a prefab, disable any renderers. Maybe used for "ghost"
+        if(section.gameObject.scene.rootCount != 0)
+        {
+            foreach(TilemapRenderer r in section.GetComponentsInChildren<TilemapRenderer>())
+            {
+                r.enabled = false;
+            }
+        }
     }
 
     void AppendTilemap(Tilemap target, Tilemap source)
@@ -73,7 +82,7 @@ public class MapSectionManager : MonoBehaviour
         foreach(Location loc in locations)
         {
             Location newLoc = GameObject.Instantiate<Location>(loc);
-            loc.transform.parent = transform;
+            newLoc.transform.parent = transform;
 
             _mapService.Locations.Add(newLoc);
         }
