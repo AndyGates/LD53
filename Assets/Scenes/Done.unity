@@ -403,7 +403,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2497260630854828840, guid: e64013b8bdf6850bbba502d71caf9ac2, type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.013513514
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2497260630854828840, guid: e64013b8bdf6850bbba502d71caf9ac2, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -411,7 +411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2497260630854828840, guid: e64013b8bdf6850bbba502d71caf9ac2, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.972973
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7891879113762804341, guid: e64013b8bdf6850bbba502d71caf9ac2, type: 3}
       propertyPath: m_Name
@@ -1167,6 +1167,7 @@ MonoBehaviour:
   _highScoreLabel: {fileID: 415156524}
   _elapsedTimeLabel: {fileID: 2089083661}
   _reasonLabel: {fileID: 236206612}
+  _titleLabel: {fileID: 1979926989}
 --- !u!4 &1561083566
 Transform:
   m_ObjectHideFlags: 0
@@ -1240,7 +1241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647882978355237112, guid: 79047da70d3eefdb89dbec55c5ea45dc, type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0.013513514
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8647882978355237112, guid: 79047da70d3eefdb89dbec55c5ea45dc, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -1248,7 +1249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647882978355237112, guid: 79047da70d3eefdb89dbec55c5ea45dc, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.972973
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

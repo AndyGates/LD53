@@ -3474,7 +3474,7 @@ MonoBehaviour:
     MaxSize: 4
     MinValue: 5
     MaxValue: 20
-    InitialPacketDispatchTime: 16
+    InitialPacketDispatchTime: 12
     PacketDispatchTimeScaler: 0.1
     MinPacketDispatchTime: 3
     ShortestTime: 45

@@ -41,19 +41,10 @@ public class PackageStream : MonoBehaviour
         {
             _firstPackage = false;
             _lastGenTime = Time.time;
-            UpdateElapsedTime();
             return RandomPackage();
         }
         return null;
     }
-
-    private void UpdateElapsedTime()
-    {
-        if (_gameManager?.State != null)
-        {
-            _gameManager.State.ElapsedSeconds += _lastGenTime;
-        }
-    } 
 
     private Package RandomPackage()
     {
@@ -121,10 +112,12 @@ public class PackageStream : MonoBehaviour
         }
 
         int randomSize = 0;
+        int iteration = 0;
         do
         {
             randomSize = UnityEngine.Random.Range(sizeFloor, sizeLimit);
-        } while (prev == randomSize);
+            iteration++;
+        } while (prev == randomSize && iteration < 10);
         return randomSize;
     }
 }

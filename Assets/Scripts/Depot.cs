@@ -37,6 +37,12 @@ public class Depot : MonoBehaviour
     [SerializeField]
     int _compensationScale = 4;
 
+    [SerializeField]
+    int _fineAmount = 10;
+
+    [SerializeField]
+    int _winTarget = 200;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
@@ -77,6 +83,11 @@ public class Depot : MonoBehaviour
         AudioSource.PlayClipAtPoint(_startSound, Vector3.zero);
     }
 
+    void Start()
+    {
+        Dialog.Show($"To win you need to reach a target bank balance of ${_winTarget}");
+    }
+
     public void HireCourier()
     {
         HireCourier(false);
@@ -113,7 +124,9 @@ public class Depot : MonoBehaviour
             else
             {
                 Debug.Log("Cant store any more packages at the depot");
-                Console.Show("Depot has run out of storage. You are unable to earn any money until you clear the backlog.");
+                Console.Show("Depot has run out of storage. You are being fined for a bad public service.");
+
+                _gameManager.State.BankBalance -= _fineAmount;
             }
         }
 
@@ -148,6 +161,11 @@ public class Depot : MonoBehaviour
         if (_gameManager.State.BankBalance < 0)
         {
             _gameManager.EndGame("You ran out of money and can no long operate your delivery business.");
+        }
+
+        if (_gameManager.State.BankBalance >= _winTarget)
+        {
+            _gameManager.EndGame($"You reached you target of ${_winTarget}, well done.");
         }
     }
 

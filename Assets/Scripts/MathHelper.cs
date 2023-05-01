@@ -13,6 +13,6 @@ public class MathHelper
 
     public static bool Approximately(float a, float b)
     {
-        return Mathf.Abs(a - b) < 0.01f;
+        return Mathf.Abs(a - b) < 0.04f;
     }
 }

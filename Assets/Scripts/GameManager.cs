@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsPaused { get; private set; }
 
+    float _startTime = 0.0f;
+
     private void Awake()
     {
         var state = FindAnyObjectByType(typeof(GameState)) as GameState;
@@ -44,11 +46,15 @@ public class GameManager : MonoBehaviour
                 State.Reset();
             }
         }
+
+        _startTime = Time.time;
     }
 
-    public void EndGame(string reason)
+    public void EndGame(string reason, string title = "Game Over")
     {
         State.EndReason = reason;
+        State.Title = title;
+        State.ElapsedSeconds = Time.time - _startTime;
         SceneManager.LoadScene("Done");
     }
 

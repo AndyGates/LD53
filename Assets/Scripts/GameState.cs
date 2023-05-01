@@ -23,6 +23,7 @@ public class GameState : MonoBehaviour
     public float ElapsedSeconds = 0;
 
     public string EndReason = "";
+    public string Title = "Game Over";
 
     internal void Reset()
     {
@@ -30,5 +31,6 @@ public class GameState : MonoBehaviour
         HighestBalance = 0;
         ElapsedSeconds = 0;
         EndReason = "";
+        Title = "GameOver";
     }
 }

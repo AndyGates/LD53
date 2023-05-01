@@ -27,27 +27,6 @@ public class Courier : MonoBehaviour
     private Vector3 NewDirection;
     private Vector3 LastDirection;
 
-    public void Start()
-    {
-        _renderer = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    IEnumerator ChangeSpriteDirection()
-    {
-
-        CurrentSprite = _courierStraight;
-        if (NewDirection.x > 0)
-        {
-            CurrentSprite = _courierLeft;
-        }
-        else if (NewDirection.x < 0)
-        {
-            CurrentSprite = _courierRight;
-        }
-        _renderer.sprite = CurrentSprite;
-        yield return null;
-    }
-
     [SerializeField]
     int _space = 4;
 
@@ -81,6 +60,11 @@ public class Courier : MonoBehaviour
 
     float _deliveringWait = 0.0f;
 
+    public void Start()
+    {
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
     void Update()
     {
         if (_dispatched == false || _currentRoute == null)
@@ -99,11 +83,7 @@ public class Courier : MonoBehaviour
         float velocity = _currentRoute.Distance / _currentRoute.Time;
         
         NewDirection = (target - transform.position).normalized;
-        StartCoroutine(ChangeSpriteDirection());
-        
-
-
-        
+        UpdateDirection();  
 
         if (MathHelper.Approximately(target, transform.position) == false)
         {
@@ -123,6 +103,20 @@ public class Courier : MonoBehaviour
             }
             NextPackage();
         }
+    }
+
+    void UpdateDirection()
+    {
+        CurrentSprite = _courierStraight;
+        if (NewDirection.x > 0)
+        {
+            CurrentSprite = _courierLeft;
+        }
+        else if (NewDirection.x < 0)
+        {
+            CurrentSprite = _courierRight;
+        }
+        _renderer.sprite = CurrentSprite;
     }
 
     void NextPackage()
