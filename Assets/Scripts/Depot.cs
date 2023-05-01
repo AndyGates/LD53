@@ -149,7 +149,7 @@ public class Depot : MonoBehaviour
 
         //Remove (clone) because we're using GO names rather than data... 
         string targetName = package.Target.name;
-        string cloneStr = "(clone)";
+        string cloneStr = "(Clone)";
         if (targetName.EndsWith(cloneStr))
         {
             targetName = targetName.Substring(0, targetName.Length - cloneStr.Length);
