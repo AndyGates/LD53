@@ -34,12 +34,15 @@ public class GameManager : MonoBehaviour
         var state = FindAnyObjectByType(typeof(GameState)) as GameState;
         if (state == null )
         {
-            GameObject temp = new GameObject();
-            State = temp.AddComponent<GameState>();
+            State = new GameObject().AddComponent<GameState>();
             DontDestroyOnLoad(State.gameObject);
         } else
         {
             State = state;
+            if (SceneManager.GetActiveScene().name == "Game")
+            {
+                State.Reset();
+            }
         }
     }
 

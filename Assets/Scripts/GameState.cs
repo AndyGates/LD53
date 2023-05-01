@@ -21,4 +21,11 @@ public class GameState : MonoBehaviour
     }
     public int HighestBalance = 0;
     public float ElapsedSeconds = 0;
+
+    internal void Reset()
+    {
+        BankBalance = 0;
+        HighestBalance = 0;
+        ElapsedSeconds = 0;
+    }
 }
