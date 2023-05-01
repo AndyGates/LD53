@@ -29,7 +29,7 @@ public class Courier : MonoBehaviour
 
     public void Start()
     {
-        _renderer = GetComponent<SpriteRenderer>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     IEnumerator ChangeSpriteDirection()
