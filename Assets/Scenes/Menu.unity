@@ -182,7 +182,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Parcels Please
+  m_text: Parcels, Please
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2ec700655d2e33841bff237815008671, type: 2}
   m_sharedMaterial: {fileID: -5165413667257370075, guid: 2ec700655d2e33841bff237815008671, type: 2}
