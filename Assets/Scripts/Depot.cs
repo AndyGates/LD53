@@ -147,7 +147,7 @@ public class Depot : MonoBehaviour
 
         if (_gameManager.State.BankBalance < 0)
         {
-            _gameManager.EndGame();
+            _gameManager.EndGame("You ran out of money and can no long operate your delivery business.");
         }
     }
 

@@ -956,7 +956,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -65.03}
-  m_SizeDelta: {x: -10, y: 184.97}
+  m_SizeDelta: {x: -10, y: 190}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &443289083
 MonoBehaviour:
@@ -2285,6 +2285,7 @@ MonoBehaviour:
   _startSound: {fileID: 8300000, guid: fa75e93569dcc3410b216ae64c51d89d, type: 3}
   _firstHireThreshold: 15
   _secondHireThreshold: 45
+  _compensationScale: 4
 --- !u!1 &1211761731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3292,7 +3293,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 5}
-  m_SizeDelta: {x: -10, y: 100}
+  m_SizeDelta: {x: -10, y: 95}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1775424652
 MonoBehaviour:

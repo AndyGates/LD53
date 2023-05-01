@@ -14,6 +14,9 @@ public class RenderScores : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _elapsedTimeLabel;
 
+    [SerializeField]
+    TextMeshProUGUI _reasonLabel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,7 @@ public class RenderScores : MonoBehaviour
     {
         _highScoreLabel.text = $"You reached ${_gameManager.State.HighestBalance}";
         _elapsedTimeLabel.text = $"You lived for {_gameManager.GetElapsedMinutes()} minutes";
+        _reasonLabel.text = _gameManager.State.EndReason;
     }
 
     private void Awake()

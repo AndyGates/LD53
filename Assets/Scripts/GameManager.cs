@@ -46,8 +46,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndGame()
+    public void EndGame(string reason)
     {
+        State.EndReason = reason;
         SceneManager.LoadScene("Done");
     }
 
