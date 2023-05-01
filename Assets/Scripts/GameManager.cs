@@ -51,4 +51,14 @@ public class GameManager : MonoBehaviour
         var mins = State.ElapsedSeconds / 60;
         return Math.Round(mins, 2); // 2 decimal
     }
+
+    public void Pause()
+    {
+        Time.timeScale = 0.0f;
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1.0f;
+    }
 }

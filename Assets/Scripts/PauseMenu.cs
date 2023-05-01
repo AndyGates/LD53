@@ -9,13 +9,14 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     GameManager _gameManager;
 
-    [SerializeField]
-    TextMeshProUGUI _elapsedTime;
-
-    // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        _elapsedTime.text = $"Elapsed time: {_gameManager.GetElapsedMinutes()} minutes";
+        _gameManager.Pause();
+    }
+
+    void OnDisable()
+    {
+        _gameManager.Resume();
     }
 
     // Update is called once per frame
@@ -24,6 +25,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             this.gameObject.SetActive(false);
+            _gameManager.Resume();
         }
     }
 }
