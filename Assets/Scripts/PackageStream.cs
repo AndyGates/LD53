@@ -18,7 +18,6 @@ public class PackageStream : MonoBehaviour
     float _packetDispatchTime = 0; // How many seconds to wait before sending a package
     float _lastGenTime = 0;
     bool _firstPackage = true;
-    int PackageCount = 0;
 
     private List<int> PreviousSizes = new List<int>();
     private bool HadBigPackage = false;
