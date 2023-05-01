@@ -34,6 +34,9 @@ public class Depot : MonoBehaviour
     [SerializeField]
     int _secondHireThreshold = 100;
 
+    [SerializeField]
+    int _compensationScale = 4;
+
     List<Courier> _couriers = new List<Courier>();
 
     List<Package> _packages = new List<Package>();
@@ -124,7 +127,7 @@ public class Depot : MonoBehaviour
 
                 Debug.Log("Package expired");
 
-                int compensation = package.Delivery.Price * 2;
+                int compensation = package.Delivery.Price * _compensationScale;
 
                 Console.Show($"You have missed the deadline for a delivery. You need to pay the customer compensation of ${compensation}.");
 
@@ -141,6 +144,11 @@ public class Depot : MonoBehaviour
             Dialog.Show("Well done, you can now hire an additional courier. Click the the hire button next to your balance to hire a extra courier.");
         }
         _lastCanHire = CanHire;
+
+        if (_gameManager.State.BankBalance < 0)
+        {
+            _gameManager.EndGame();
+        }
     }
 
     void OnDelivered(Package package)
