@@ -4196,7 +4196,7 @@ PrefabInstance:
       objectReference: {fileID: 7119818294383112190}
     - target: {fileID: 2479388745034494159, guid: c92f75ee6e59b4d46b34a3bdea976e79, type: 3}
       propertyPath: _newSectionDelay
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2479388745034494159, guid: c92f75ee6e59b4d46b34a3bdea976e79, type: 3}
       propertyPath: _mapSections.Array.size
