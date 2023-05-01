@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public enum Cell
 {
@@ -22,6 +23,9 @@ public class Map : MonoBehaviour
     TextAsset _dataTable;
 
     [SerializeField]
+    MapSectionManager _sectionManager;
+
+    [SerializeField]
     float _scale = 2.5f;
 
     [SerializeField]
@@ -38,6 +42,11 @@ public class Map : MonoBehaviour
     public float Scale { get => _scale; }
 
     void Start()
+    {
+        Load();
+    }
+
+    public void Refresh()
     {
         Load();
     }
@@ -78,6 +87,12 @@ public class Map : MonoBehaviour
 
     void Load()
     {
+        if(_sectionManager != null)
+        {
+            LoadFromTilemap();
+            return;
+        }
+
         if (_dataTable == null)
         {
             return;
@@ -93,6 +108,39 @@ public class Map : MonoBehaviour
             for(int col = 0; col < cells.Length; col++) 
             {
                 Grid[row][col] = (Cell)int.Parse(cells[col]);
+            }
+        }
+    }
+
+    void LoadFromTilemap()
+    {
+        if (_sectionManager == null)
+        {
+            return;
+        }
+
+        Tilemap source = _sectionManager.Roads;
+
+        int xMin = source.cellBounds.min.x;
+        int xMax = source.cellBounds.max.x;
+
+        int yMin = source.cellBounds.min.y;
+        int yMax = source.cellBounds.max.y;
+
+        Grid = new Cell[yMax - yMin][];
+
+        for(int y = yMin; y < yMax; y++)
+        {
+
+            //Inversing Y. I have descended into madness
+            int yIndex = ((yMax-1)-yMin)-(y-yMin);
+
+            Grid[yIndex] = new Cell[xMax - xMin];
+
+            for(int x = xMin; x < xMax; x++)
+            {
+                Vector3Int pos = new Vector3Int(x,y,0);
+                Grid[yIndex][x-xMin] = source.HasTile(pos) ? Cell.Road : Cell.Impassable;
             }
         }
     }
