@@ -50,13 +50,18 @@ public class MapSectionManager : MonoBehaviour
 
     void Append(MapSection section)
     {
+        Console.Show($"New map section unlocked.");
+
         AppendTilemap(_roads, section.RoadTiles);
         AppendTilemap(_ground, section.GroundTiles);
         AppendLocations(section.Locations);
         _mapService.Refresh();
 
-        _spawnSound.Play();
-
+        if(_sectionCount > 0)
+        {
+            _spawnSound.Play();
+        }
+        
         //If we are not a prefab, disable any renderers. Maybe used for "ghost"
         if(section.gameObject.scene.rootCount != 0)
         {
