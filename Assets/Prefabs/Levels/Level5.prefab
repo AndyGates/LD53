@@ -58,11 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.x
-      value: -3
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6087152713990422411, guid: 1337237a090b9154a80896dd9419e2df, type: 3}
       propertyPath: _mapCoord.y
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -88,7 +88,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 674292952548540643, guid: 74450df8c746b444e8cba13f1e26939b, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 674292952548540643, guid: 74450df8c746b444e8cba13f1e26939b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3478,11 +3478,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3943768352653551306, guid: b2d8c06183950f240bff1f4890f25f59, type: 3}
       propertyPath: _mapCoord.x
-      value: 0
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 3943768352653551306, guid: b2d8c06183950f240bff1f4890f25f59, type: 3}
       propertyPath: _mapCoord.y
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6738191403267603397, guid: b2d8c06183950f240bff1f4890f25f59, type: 3}
       propertyPath: m_RootOrder
